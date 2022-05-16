@@ -1,0 +1,52 @@
+/* Main Content */
+#homeTitle {
+  text-align: center;
+  padding: 15px;
+}
+
+table {
+  width: 1200px;
+  height: 90%;
+  margin: auto;
+  text-align: center;
+  border-collapse: collapse;
+  border-top: 3px solid;
+  border-bottom: 3px solid;
+}
+
+thead {
+  border-bottom: 3px solid;
+}
+
+.b {
+  border-top: 1px solid;
+}
+
+.b1 {
+  width: 30px;
+}
+.b3 {
+  width: 90px;
+  padding: 2px;
+}
+.b4 {
+  width: 35px;
+  padding: 2px;
+}
+.b5 {
+  width: 35px;
+  padding: 2px;
+}
+.b6 {
+  width: 100px;
+}
+
+.page {
+  padding-top: 10px;
+  text-align: center;
+}
+@media screen and (max-width:1200px) {
+  table{
+    width: 90%;
+  }
+}

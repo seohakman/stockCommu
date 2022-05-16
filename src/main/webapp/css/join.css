@@ -1,0 +1,52 @@
+@media screen and (max-width:1200px) {
+}
+/* Main Content */
+#homeTitle {
+	color: var(--color-dark-grey);
+  text-align: center;
+  padding: 30px 15px 15px 15px;
+}
+
+table {
+	color: var(--color-dark-grey);
+	font-size: var(--font-regular);
+	font-weight: var(--weight-bold);
+	text-align: left;
+	align-content: center;
+	margin: auto;
+	padding-top:12px;
+	padding-bottom:12px;
+	border: 3px solid var(--color-light-green);
+  border-radius: 5px;
+}
+
+td {
+	padding: 15px;
+}
+
+.check {
+	color: var(--color-dark-grey);
+  font-weight: var(--weight-bold);
+  text-align: center;
+  padding: 5px 5px 5px 5px;
+	border: 2px solid var(--color-light-green);
+  border-radius: 5px;
+}
+
+.tdJoin {
+	text-align: center;
+}
+
+#join-btn {
+	padding: 5px 25px 5px 25px;
+	border: 3px solid var(--color-light-green);
+  border-radius: 5px;
+}
+
+table span {
+	color: var(--color-dark-grey);
+	font-size: var(--font-regular);
+	font-weight: var(--weight-bold);
+}
+
+

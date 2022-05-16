@@ -1,0 +1,164 @@
+/* Global */
+:root {
+  /* Color */
+  --color-white: #ffffff;
+  --color-light-white: #eeeeee;
+  --color-light-green: #3CB371;
+  --color-dark-white: #bdbdbd;
+  --color-pink: #fe918d;
+  --color-dark-pink: #ff6863;
+  --color-black: #4d4d4d;
+  --color-dark-grey: #4d4d4d;
+  --color-grey: #616161;
+  --color-light-grey: #7c7979;
+  --color-blue: #73aace;
+  --color-yellow: #fff7d1;
+  --color-orange: #feb546;
+  --color-black: #000000;
+
+  /* Font size */
+  --font-large: 48px;
+  --font-medium: 28px;
+  --font-regular: 18px;
+  --font-small: 16px;
+  --font-micro: 14px;
+
+  /* Font weight */
+  --weight-bold: 700;
+  --weight-semi-bold: 600;
+  --weight-regular: 400;
+
+  /* Size */
+  --size-border-radius: 4px;
+
+  /* Annimation */
+  --animation-duration: 300ms;
+}
+
+/* Universal tags */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Nanum Gothic", sans-serif; 
+  /* 나눔 고딕 사용하자. */
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-white);
+}
+
+ul {
+  padding-left: 0;
+}
+
+li {
+  list-style: none;
+}
+
+button {
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+/* Typography */
+h1 {
+  font-size: var(--font-large);
+  font-weight: var(--weight-bold);
+  color: var(--color-black);
+  margin: 16px 0px;
+}
+
+h2 {
+  font-size: var(--font-medium);
+  font-weight: var(--weight-bold);
+  color: var(--color-black);
+  margin: 8px 0;
+}
+
+h3 {
+  font-size: var(--font-regular);
+  font-weight: var(--font-regular);
+  color: var(--color-black);
+  margin: 8px 0;
+}
+
+p {
+  font-size: var(--font-regular);
+  font-weight: var(--font-regular);
+  color: var(--color-black);
+  margin: 4px 0;
+}
+
+/* Navbar */
+#navbar {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  padding: 16px;
+  background-color: var(--color-light-green);
+}
+
+#login {
+	margin-left: auto;
+	margin-right: 10px;
+  font-size: var(--font-small);
+  font-weight: var(--weight-bold);
+}
+.navbar__logo {
+  font-size: var(--font-medium);
+  font-weight: var(--weight-bold);
+  color: white;
+}
+
+.navbar__toggle-btn {
+  color: var(--color-white);
+}
+
+.navbar__toggle_content {
+  display: none;
+  position: absolute;
+  right: 0;
+  min-width: 10px;
+  float: right;
+  background-color: var(--color-light-green);
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+
+}
+
+.navbar__toggle_content a{
+  text-decoration: none;
+  display: block;
+  text-align: right;
+  width: 100px;
+  padding: 12px 10px;
+}
+
+.show {
+  display: block;
+}
+
+
+/* contact */
+footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+}
+
+#contact {
+  display: flex;
+  padding: 16px;
+  background-color: var(--color-light-green);
+}
+
+.contact__rights {
+  margin: auto;
+  color: var(--color-white);
+  font-size: var(--font-micro);
+} 
