@@ -22,18 +22,18 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
     <nav id="navbar">
       <div class="navbar__logo">
         <i class="far fa-arrow-alt-circle-up"></i>
-        <a href="#">StockSophia</a>
+        <a href="<%= request.getContextPath()%>/main/index.do">StockSophia</a>
       </div>
-			<a id="login" href="#">로그인</a>
+			<a id="login" href="<%= request.getContextPath()%>/member/memberLogin.do">로그인</a>
       <div class="dropdown">
         <button class="navbar__toggle-btn">
           <i class="fas fa-bars fa-2x"></i>
         </button>
         <div class="navbar__toggle_content" id="myDropdown">
-          <a href="#">회원가입</a>
-          <a href="#">자유게시판</a>
-          <a href="#">추천게시판</a>
-          <a href="#">마이페이지</a>
+          <a href="<%= request.getContextPath()%>/member/memberJoin.do">회원가입</a>
+          <a href="<%= request.getContextPath()%>/second/secondBoard.do">자유게시판</a>
+          <a href="<%= request.getContextPath()%>/main/index.do">추천게시판</a>
+          <a href="<%= request.getContextPath()%>/notify/notifyBoard.do">공지사항</a>
         </div>
       </div>
     </nav>

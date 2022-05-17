@@ -1,4 +1,4 @@
-package dbconn;
+package stockCommu.dbconn;
 
 import java.sql.*;
 

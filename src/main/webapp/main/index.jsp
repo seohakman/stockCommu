@@ -5,8 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="<%=request.getContextPath() %>/css/login.css" />
-<link rel="stylesheet" href="<%=request.getContextPath() %>/css/global.css" />
+<link rel="stylesheet" href="<%= request.getContextPath()%>/css/myStyle.css" />
+<link rel="stylesheet" href="<%= request.getContextPath()%>/css/global.css" />
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap"
 			rel="stylesheet">
 <script src="https://kit.fontawesome.com/9eb162ac0d.js"
@@ -15,7 +15,7 @@
 rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 />
-<title>로그인</title>
+<title>추천 게시판</title>
 </head>
 <body>
 	<!-- Navbar -->
@@ -39,31 +39,40 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
     </nav>
     <!-- main content -->
     <section id="home">
-      <h1 id="homeTitle"> Login </h1>
-			<table >
-        <tr>
-          <td>아이디 :</td>
-          <td><input type="text"></td>
-        </tr>
-        <tr>
-          <td>비밀번호 :</td>
-          <td><input type="password"></td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            <a href="#">아이디찾기</a>  /
-            <a href="#">비밀번호찾기</a>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2"><a href="#">회원가입</a></td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            <button type="submit" id="login-btn"><span>로그인</span></button>
-          </td>
-        </tr>
-      </table>
+      <h1 id="homeTitle"> 추천 게시판 </h1>
+		<table>
+			<thead>
+				<tr>
+					<th class="b1">No.</th>
+					<th class="b2">제목</th>
+					<th class="b3">작성자</th>
+					<th class="b4">조회</th>
+					<th class="b5">추천</th>
+					<th class="b6">작성일</th>
+				</tr>
+			</thead>
+			<tbody>
+             	<tr class="b">
+	                <td >1</td>
+	                <td >공지사항</td>
+	                <td >운영자</td>
+	                <td >100</td>
+	                <td>100</td>
+	                <td>2022.05.10</td>
+             	</tr>
+				<tr class="b">
+					<td >2</td>
+					<td >글 제목</td>
+					<td >홍길동</td>
+					<td >3</td>
+					<td>2</td>
+					<td>2022.05.10</td>
+				</tr>
+			</tbody>
+		</table>
+      <div class="page">
+        &ltrif; 1 2 3 4 5 6 &rtrif;
+      </div>
     </section>
     <!-- Contact -->
     <footer>
