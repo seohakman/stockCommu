@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="<%=request.getContextPath() %>/css/findID.css" />
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/findPWD.css" />
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/global.css" />
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap"
 			rel="stylesheet">
@@ -16,12 +16,13 @@ rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 />
 <script>
-	function findIDbtn(){
-		document.fm.action="<%=request.getContextPath()%>/member/findIDAction.do";
+	function findPWD(){
+		document.fm.action="<%=request.getContextPath()%>/member/findPWDAction.do";
 		document.fm.method="post";
 	}
+	
 </script>
-<title>아이디 찾기</title>
+<title>비밀번호 찾기</title>
 </head>
 <body>
 	<!-- Navbar -->
@@ -45,7 +46,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
     </nav>
     <!-- main content -->
     <section id="home">
-      <h1 id="homeTitle"> 아이디 찾기 </h1>
+      <h1 id="homeTitle"> 비밀번호 찾기 </h1>
 	  <table >
 	  <form name=fm>
         <tr>
@@ -53,12 +54,16 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
           <td><input type="text" name="name" required></td>
         </tr>
         <tr>
+          <td>아이디 :</td>
+          <td><input type="text" name="ID" required></td>
+        </tr>
+        <tr>
           <td>이메일 :</td>
           <td><input type="text" name="email" required></td>
         </tr>
         <tr>
           <td colspan="2">
-            <button type="submit" id="findID-btn" onclick="findIDbtn()"><span>아이디 찾기</span></button>
+            <button type="submit" id="findPWD-btn" onclick="findPWD()"><span>비밀번호 찾기</span></button>
           </td>
         </tr>
       </form>

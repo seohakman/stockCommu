@@ -11,7 +11,7 @@ table {
 	color: var(--color-dark-grey);
 	font-size: var(--font-regular);
 	font-weight: var(--weight-bold);
-	text-align: left;
+	text-align: center;
 	align-content: center;
 	margin: auto;
 	padding-top:12px;
@@ -24,20 +24,7 @@ td {
 	padding: 15px;
 }
 
-.check {
-	color: var(--color-dark-grey);
-  font-weight: var(--weight-bold);
-  text-align: center;
-  padding: 5px 5px 5px 5px;
-	border: 2px solid var(--color-light-green);
-  border-radius: 5px;
-}
-
-.tdJoin{
-	text-align: center;
-}
-
-#join-btn {
+#findPWD-btn {
 	padding: 5px 25px 5px 25px;
 	border: 3px solid var(--color-light-green);
   border-radius: 5px;
@@ -48,5 +35,4 @@ table span {
 	font-size: var(--font-regular);
 	font-weight: var(--weight-bold);
 }
-
 

@@ -84,5 +84,5 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
       </section>
     </footer>
 </body>
-<script src="<%=request.getContextPath() %>/script/script.js"></script>
+<script src="<%=request.getContextPath() %>/script/script.js?ver=1"></script>
 </html>

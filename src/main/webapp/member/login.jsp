@@ -15,6 +15,12 @@
 rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 />
+<script>
+	function clickLogin(){
+		document.fm.action="<%=request.getContextPath()%>/member/memberLoginAction.do";
+		document.fm.method="post";
+	}
+</script>
 <title>로그인</title>
 </head>
 <body>
@@ -40,29 +46,31 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
     <!-- main content -->
     <section id="home">
       <h1 id="homeTitle"> Login </h1>
-			<table >
+	  <table >
+	  <form name=fm>
         <tr>
           <td>아이디 :</td>
-          <td><input type="text"></td>
+          <td><input type="text" required name="ID"></td>
         </tr>
         <tr>
           <td>비밀번호 :</td>
-          <td><input type="password"></td>
+          <td><input type="password" required name="PWD"></td>
         </tr>
         <tr>
           <td colspan="2">
-            <a href="#">아이디찾기</a>  /
-            <a href="#">비밀번호찾기</a>
+            <a href="<%= request.getContextPath()%>/member/findID.do">아이디찾기</a>  /
+            <a href="<%= request.getContextPath()%>/member/findPWD.do">비밀번호찾기</a>
           </td>
         </tr>
         <tr>
-          <td colspan="2"><a href="#">회원가입</a></td>
+          <td colspan="2"><a href="<%= request.getContextPath()%>/member/memberJoin.do">회원가입</a></td>
         </tr>
         <tr>
           <td colspan="2">
-            <button type="submit" id="login-btn"><span>로그인</span></button>
+            <button type="submit" id="login-btn" onclick="clickLogin()"><span>로그인</span></button>
           </td>
         </tr>
+      </form>  
       </table>
     </section>
     <!-- Contact -->

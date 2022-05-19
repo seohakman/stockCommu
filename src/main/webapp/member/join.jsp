@@ -15,6 +15,30 @@
 rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 />
+<script type="text/javascript">
+
+	function check() {
+	if(document.fm.PWD.value != document.fm.PWDCheck.value){
+		alert("비밀번호가 일치하지 않습니다.");
+		document.fm.PWDCheck.focus();
+		return;
+	}
+	document.fm.action = "<%=request.getContextPath()%>/member/memberJoinAction.do";
+	document.fm.method = "post";
+	}
+	
+	function checkedID(){
+		if(document.fm.ID.value == ""){
+			alert("아이디를 입력하세요.");
+			document.fm.ID.focus();
+			return;
+		}
+		
+		document.fm.action = "<%=request.getContextPath()%>/member/idCheckAction.do";
+		document.fm.method = "post";
+		document.fm.submit();
+	}
+</script>
 <title>회원가입</title>
 </head>
 <body>
@@ -46,7 +70,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
           <td>아이디 :</td>
           <td>
 			<input type="text" name="ID" required> 
-			<button type="button" class="check"> 중복확인 </button>
+			<button type="button" class="check" onclick="checkedID()"> 중복확인 </button>
 		  </td>
         </tr>
 		<tr>
@@ -65,9 +89,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
           <td>이메일 :</td>
           <td><input type="email" name="email" required></td>
         </tr>
-        <tr>
+        <tr>	
           <td colspan="2" class="tdJoin">
-            <button type="button" id="join-btn"><span>생성</span></button>
+            <button type="submit" id="join-btn" onclick="check()"><span>생성</span></button>
           </td>
         </tr>
       </form>
@@ -83,5 +107,5 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
       </section>
     </footer>
 </body>
-<script src="<%= request.getContextPath() %>/script/script.js"></script>
+<script src="<%=request.getContextPath()%>/script/script.js"></script>
 </html>
