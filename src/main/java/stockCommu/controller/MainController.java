@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 
 @WebServlet("/MainController")
@@ -29,6 +31,18 @@ public class MainController extends HttpServlet {
 			//메인페이지로 이동
 			RequestDispatcher rd = request.getRequestDispatcher("/main/index.jsp");
 			rd.forward(request, response);
+		}else if(command.equals("/main/mainWrite.do")) {
+			//글 작성 페이지로 이동
+			RequestDispatcher rd = request.getRequestDispatcher("/main/mainWrite.jsp");
+			rd.forward(request, response);
+		}else if(command.equals("/main/mainWriteAction.do")) {
+			HttpSession session = request.getSession();
+			String subject = request.getParameter("subject");
+			String content = request.getParameter("content");
+			String id = (String) session.getAttribute("id");
+			int midx = (int)session.getAttribute("midx");
+
+			
 		}
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

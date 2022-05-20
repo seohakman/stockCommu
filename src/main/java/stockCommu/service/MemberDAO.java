@@ -84,6 +84,7 @@ public class MemberDAO {
 			if(rs.next()) {
 				mv = new MemberVO();
 				mv.setMidx(rs.getInt("midx"));
+				mv.setName(rs.getString("name"));
 				mv.setId(rs.getString("id"));
 				mv.setPwd(rs.getString("pwd"));
 			}

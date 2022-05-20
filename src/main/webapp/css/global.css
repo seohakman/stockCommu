@@ -43,7 +43,6 @@
 body {
   margin: 0;
   font-family: "Nanum Gothic", sans-serif; 
-  /* 나눔 고딕 사용하자. */
 }
 
 a {
@@ -142,7 +141,6 @@ p {
 .show {
   display: block;
 }
-
 
 /* contact */
 footer {

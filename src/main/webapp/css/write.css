@@ -5,10 +5,12 @@ table {
   text-align: center;
   border-collapse: collapse;
   border-top: 3px solid var(--color-dark-grey);
-  border-bottom: 3px solid var(--color-dark-grey);
 }
 
 thead {
+  border-bottom: 3px solid var(--color-dark-grey);
+}
+tbody {
   border-bottom: 3px solid var(--color-dark-grey);
 }
 

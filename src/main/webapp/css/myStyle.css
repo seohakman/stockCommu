@@ -6,7 +6,6 @@
 
 table {
   width: 1200px;
-  height: 90%;
   margin: auto;
   text-align: center;
   border-collapse: collapse;
@@ -42,11 +41,31 @@ thead {
 }
 
 .page {
-  padding-top: 10px;
-  text-align: center;
+	width: 1200px;
+	margin: auto;
+	padding-top:10px;
+    text-align: center;
 }
+#writeDiv {
+	width: 1200px;
+	margin: auto;
+}
+#writeBtn {
+	margin-top: 5px;
+	padding: 5px 25px 5px 25px;
+	border: 3px solid var(--color-light-green);
+	border-radius: 5px;
+	float: right;
+}
+
 @media screen and (max-width:1200px) {
   table{
     width: 90%;
+  }
+  #writeDiv {
+	width: 90%;
+  }
+  .page {
+	width: 90%;
   }
 }

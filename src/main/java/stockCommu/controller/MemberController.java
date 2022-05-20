@@ -100,6 +100,7 @@ public class MemberController extends HttpServlet {
 				session.setAttribute("id", mv.getId());
 				session.setAttribute("name", mv.getName());
 				session.setAttribute("point", mv.getPoint());
+				System.out.println(mv.getName());
 				// 3.이동
 				if(session.getAttribute("saveUrl") != null) {
 					response.sendRedirect((String)session.getAttribute("saveUrl"));
@@ -110,6 +111,11 @@ public class MemberController extends HttpServlet {
 				out.println("<script>alert('아이디, 비밀번호가 틀렸거나 존재하지 않는 회원입니다.');location.href='"+request.getContextPath()+"/member/memberLogin.do'</script>");
 					
 			}
+		}else if(command.equals("/member/memberLogoutAction.do")) {
+			//로그아웃
+			HttpSession session = request.getSession();
+			session.invalidate();
+			response.sendRedirect(request.getContextPath()+"/main/index.do");
 		}else if(command.equals("/member/findIDAction.do")) {
 			// 아이디찾기 버튼을 클릭했을 때
 			PrintWriter out = response.getWriter();

@@ -24,13 +24,24 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
         <i class="far fa-arrow-alt-circle-up"></i>
         <a href="<%= request.getContextPath()%>/main/index.do">StockSophia</a>
       </div>
-			<a id="login" href="<%= request.getContextPath()%>/member/memberLogin.do">로그인</a>
+<% if(session.getAttribute("midx")==null){ %>
+	  <a id="login" href="<%= request.getContextPath()%>/member/memberLogin.do">로그인</a>
+<% }else{
+		out.println("<a id='login'>"+session.getAttribute("name") +"</a>");
+}
+%>
       <div class="dropdown">
         <button class="navbar__toggle-btn">
           <i class="fas fa-bars fa-2x"></i>
         </button>
         <div class="navbar__toggle_content" id="myDropdown">
-          <a href="<%= request.getContextPath()%>/member/memberJoin.do">회원가입</a>
+<%if(session.getAttribute("midx") != null){ %>
+		  <a href='<%= request.getContextPath()%>/member/memberLogoutAction.do'>로그아웃</a>
+<%	
+}else{
+%>
+		  <a href='<%= request.getContextPath()%>/member/memberJoin.do'>회원가입</a>
+<%} %>
           <a href="<%= request.getContextPath()%>/second/secondBoard.do">자유게시판</a>
           <a href="<%= request.getContextPath()%>/main/index.do">추천게시판</a>
           <a href="<%= request.getContextPath()%>/notify/notifyBoard.do">공지사항</a>
