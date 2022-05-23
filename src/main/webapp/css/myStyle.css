@@ -12,6 +12,9 @@ table {
   border-top: 3px solid;
   border-bottom: 3px solid;
 }
+table a{
+	color: var(--color-black);
+}
 
 thead {
   border-bottom: 3px solid;

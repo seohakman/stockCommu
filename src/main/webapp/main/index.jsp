@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.*"  %>
+<%@ page import="stockCommu.domain.*" %>
+<% ArrayList<MainVO> alist = (ArrayList<MainVO>)request.getAttribute("alist"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,24 +66,33 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 					<th class="b6">작성일</th>
 				</tr>
 			</thead>
+<% for(MainVO mv: alist){ 
+	if(session.getAttribute("midx") != null){ %>
+	<!-- 로그인 했을 경우에만 게시물 클릭 이동이 가능하게 한다. -->
 			<tbody>
              	<tr class="b">
-	                <td >1</td>
-	                <td >공지사항</td>
-	                <td >운영자</td>
-	                <td >100</td>
-	                <td>100</td>
-	                <td>2022.05.10</td>
+	                <td><%=mv.getBidx() %></td>
+	                <td>
+	                	<a href="<%=request.getContextPath()%>/main/mainContent.do?bidx=<%=mv.getBidx()%>"><%=mv.getSubject()%></a>
+	                </td>
+	                <td><%=mv.getWriter() %></td>
+	                <td><%=mv.getViewCount() %></td>
+	                <td><%=mv.getLikeCount() %></td>
+	                <td><%=mv.getWriteday() %></td>
              	</tr>
-				<tr class="b">
-					<td >2</td>
-					<td >글 제목</td>
-					<td >홍길동</td>
-					<td >3</td>
-					<td>2</td>
-					<td>2022.05.10</td>
-				</tr>
 			</tbody>
+<%}else{%>
+			<tbody>
+             	<tr class="b">
+	                <td><%=mv.getBidx() %></td>
+	                <td><%=mv.getSubject()%></td>
+	                <td><%=mv.getWriter() %></td>
+	                <td><%=mv.getViewCount() %></td>
+	                <td><%=mv.getLikeCount() %></td>
+	                <td><%=mv.getWriteday() %></td>
+             	</tr>
+			</tbody>
+<%}} %>
 		</table>
 <%if(session.getAttribute("midx") != null){ %>
 		<div id="writeDiv">
@@ -106,5 +118,5 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 		location.href="<%= request.getContextPath()%>/main/mainWrite.do";
 	}
 </script>
-<script src="<%=request.getContextPath() %>/script/script.js?ver=1"></script>
+<script src="<%=request.getContextPath() %>/script/script.js"></script>
 </html>

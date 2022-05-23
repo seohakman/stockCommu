@@ -1,17 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
-<%@ page import="stockCommu.domain.*"%>
-<% MainVO mv = (MainVO)request.getAttribute("mv"); 
-   ArrayList<MainReplyVO> mlist = (ArrayList<MainReplyVO>)request.getAttribute("mlist");
-%>
+<%@ page import="stockCommu.domain.*" %>
+<% MainVO mv = (MainVO)request.getAttribute("mv"); %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="<%=request.getContextPath() %>/css/boardContent.css" />
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/global.css" />
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/write.css" />
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap"
 			rel="stylesheet">
 <script src="https://kit.fontawesome.com/9eb162ac0d.js"
@@ -21,12 +19,12 @@ rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 />
 <script>
-	function replyFn(){
-		document.fm.action="<%=request.getContextPath()%>/main/mainReplyAction.do?bidx=<%=mv.getBidx()%>&writer=<%=mv.getWriter()%>"
+	function mainModifySubmit(){
+		document.fm.action="<%=request.getContextPath()%>/main/mainContentModifyAction.do?bidx=<%= mv.getBidx()%>";
 		document.fm.method="post";
 	}
 </script>
-<title>게시글</title>
+<title>게시글 수정</title>
 </head>
 <body>
 	<!-- Navbar -->
@@ -61,69 +59,32 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
     </nav>
     <!-- main content -->
     <section id="home">
-      <h1 id="homeTitle"> 추천 게시판 </h1>
+		<br><br><br>
 		<table >
+		<form name=fm>
 			<thead>
 				<tr>
-					<th id="subject">제목</th>
-					<th><%= mv.getSubject() %></th>
-					<th id="writer">작성자</th>
-					<th><%= mv.getWriter() %></th>
+					<th><input id="subject" name="subject" type="text" value="<%=mv.getSubject() %>" required></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td colspan="4"><%= mv.getContent() %></td>
-				</tr>
-				<tr>
-					<td colspan="4" id="count">
-						<div>추천수 : <%= mv.getLikeCount() %></div>
-						<div>조회수 : <%= mv.getViewCount() %></div>
-					</td>
-				</tr>
-			</tbody>
-    	</table>
-		<br>
-		<div class="div-btn">
-			<button id="good" onclick="location.href='<%=request.getContextPath()%>/main/mainContentLike.do?name=good&bidx=<%=mv.getBidx()%>'">추천</button>
-			<button id="bad" onclick="location.href='<%=request.getContextPath()%>/main/mainContentLike.do?name=bad&bidx=<%=mv.getBidx()%>'">비추천</button>
-			<button id="report">신고</button>
-<%if(session.getAttribute("midx").equals(mv.getMidx())){ %>
-			<button id="modify" onclick="location.href='<%=request.getContextPath()%>/main/mainContentModify.do?bidx=<%=mv.getBidx()%>'">수정</button>
-			<button onclick="location.href='<%=request.getContextPath()%>/main/mainContentDelete.do?bidx=<%=mv.getBidx()%>'">삭제</button>
-<%} %>
-		</div>
-		<br>
-		<!-- 댓글창 -->
-		<table id="replyTable">
-			<thead>
-				<th colspan="3">댓글</th>
-			</thead>
-			<tbody>
-<%for(MainReplyVO mrv: mlist){ %>
-				<tr>
-					<td><%=mrv.getContent() %></td>
-					<td><%= mrv.getWriter() %></td>
-					<td><%= mrv.getWriteday() %></td>
-				</tr>
-<%} %>
-				<tr>
-					<td><br><br></td>
+					<td><textarea id="content" name="content" required><%=mv.getContent() %></textarea></td>
 				</tr>
 			</tbody>
 			<tfoot>
-			<form name=fm>
 				<tr>
-					<td colspan="2">
-						<textarea name="mainReply" id="txtarea"></textarea>
-					</td>
-					<td id="submitTd">
-						<button type="submit" id="replySubmit" onclick="replyFn()">등록</button>
+					<td>
+						<button type="submit" onclick="mainModifySubmit()">등록</button>
+						<button type="button" onclick="history.back();">취소</button>
 					</td>
 				</tr>
-			</form>
 			</tfoot>
-		</table>
+		</form>
+        </table>
+		<br>
+		<div class="div-btn">
+		</div>
     </section>
     <!-- Contact -->
     <footer>
