@@ -90,7 +90,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 			<button id="report">신고</button>
 <%if(session.getAttribute("midx").equals(mv.getMidx())){ %>
 			<button id="modify" onclick="location.href='<%=request.getContextPath()%>/main/mainContentModify.do?bidx=<%=mv.getBidx()%>'">수정</button>
-			<button onclick="location.href='<%=request.getContextPath()%>/main/mainContentDelete.do?bidx=<%=mv.getBidx()%>'">삭제</button>
+			<button onclick="if(!confirm('삭제하시겠습니까?')){return false};
+			location.href='<%=request.getContextPath()%>/main/mainContentDelete.do?bidx=<%=mv.getBidx()%>'">삭제</button>
 <%} %>
 		</div>
 		<br>

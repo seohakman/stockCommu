@@ -13,8 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
+
 import stockCommu.domain.MainReplyVO;
 import stockCommu.domain.MainVO;
+import stockCommu.domain.PageMaker;
+import stockCommu.domain.SearchCriteria;
 import stockCommu.service.MainDAO;
 
 
@@ -35,11 +38,31 @@ public class MainController extends HttpServlet {
 		
 		if(command.equals("/main/index.do")) {
 			//메인페이지로 이동
-			ArrayList<MainVO> alist;
-			MainDAO mdo = new MainDAO();
+			//검색 폼에서 파라미터를 받아온다.
+			String page = request.getParameter("page");
+			if(page==null) {page = "1";}
+			String searchType = request.getParameter("searchType");
+			if(searchType==null) {searchType = "subject";}
+			String keyword = request.getParameter("keyword");
+			if(keyword==null) {keyword = "";}
+
+			// 검색을 정의하는 클래스에 파라미터를 담는다.
+			SearchCriteria scri = new SearchCriteria();
+			scri.setPage(Integer.parseInt(page));
+			scri.setKeyword(keyword);
+			scri.setSearchType(searchType);
 			
-			alist = mdo.mainSelectAll();
+			//pageMaker로 page 정보 객체 생성
+			PageMaker pm = new PageMaker();
+			MainDAO mdo = new MainDAO();
+			int cnt = mdo.selectCount(scri);
+			pm.setScri(scri);
+			pm.setTotalCount(cnt);
+			
+			ArrayList<MainVO> alist;
+			alist = mdo.mainSelectAll(scri);
 			request.setAttribute("alist", alist);
+			request.setAttribute("pm", pm);
 			
 			RequestDispatcher rd = request.getRequestDispatcher("/main/index.jsp");
 			rd.forward(request, response);

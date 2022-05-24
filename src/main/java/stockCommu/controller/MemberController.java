@@ -100,7 +100,7 @@ public class MemberController extends HttpServlet {
 				session.setAttribute("id", mv.getId());
 				session.setAttribute("name", mv.getName());
 				session.setAttribute("point", mv.getPoint());
-				System.out.println(mv.getName());
+				
 				// 3.¿Ãµø
 				if(session.getAttribute("saveUrl") != null) {
 					response.sendRedirect((String)session.getAttribute("saveUrl"));

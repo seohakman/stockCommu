@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import stockCommu.dbconn.Dbconn;
 import stockCommu.domain.MainReplyVO;
 import stockCommu.domain.MainVO;
+import stockCommu.domain.SearchCriteria;
 
 public class MainDAO {
 	
@@ -41,16 +42,33 @@ public class MainDAO {
 		return value;
 	}
 	
-	public ArrayList<MainVO> mainSelectAll(){
+	public ArrayList<MainVO> mainSelectAll(SearchCriteria scri){
 		// main 테이블의 모든 내용을 가져온다.
 		ArrayList<MainVO> alist = new ArrayList();
 		MainVO mv = null;
 		ResultSet rs = null;
 		
-		String sql = "select * from main where delyn = 'N'";
+//		String sql = "select * from main where delyn = 'N'";
+		
+		String str = "";
+		if(scri.getSearchType().equals("subject")) {
+			str = "and subject like '%"+scri.getKeyword()+"%'";
+		}else if(scri.getSearchType().equals("writer")){
+			str = "and writer like '%"+scri.getKeyword()+"%'";
+		}
+		
+		String sql = "SELECT * FROM("
+					+"SELECT tb.*, ROWNUM rNum FROM("
+					+	"SELECT * FROM main ORDER BY bidx DESC"
+					+	") tb"
+					+")WHERE rNum BETWEEN ? AND ? and delyn = 'N'" + str;
+		
 		try {
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (scri.getPage()-1)*10+1);
+			pstmt.setInt(2, (scri.getPage()*10));
 			rs = pstmt.executeQuery();
+			
 			
 			while(rs.next()) {
 				mv = new MainVO();
@@ -224,6 +242,7 @@ public class MainDAO {
 	}
 	
 	public int viewCountUp(int bidx) {
+		// 조회수 증가 메서드
 		int value = 0;
 		String sql = "update main set viewcount = viewcount + 1 where bidx = ?";
 		try {
@@ -236,6 +255,30 @@ public class MainDAO {
 		return value;
 	}
 	
+	public int selectCount(SearchCriteria scri) {
+		//특정 조건에 맞는 게시글의 총개수를 구한다.
+		String str = ""; // scri에 들어있는 searchType과 keyword의 값에 따라 다른 값을 준다.
+		if(scri.getSearchType().equals("subject")) {
+			str = "and subject like '%"+scri.getKeyword()+"%'";
+		}else if(scri.getSearchType().equals("writer")){
+			str = "and writer like '%"+scri.getKeyword()+"%'";
+		}
+		String sql= "select count(*) cnt from main where delyn = 'N'" + str;
+		int value = 0;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				value = rs.getInt("cnt");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return value;
+	}
 	
 	
 	

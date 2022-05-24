@@ -2,7 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*"  %>
 <%@ page import="stockCommu.domain.*" %>
-<% ArrayList<MainVO> alist = (ArrayList<MainVO>)request.getAttribute("alist"); %>
+<% 
+	ArrayList<MainVO> alist = (ArrayList<MainVO>)request.getAttribute("alist"); 
+	PageMaker pm = (PageMaker)request.getAttribute("pm");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -94,13 +97,31 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 			</tbody>
 <%}} %>
 		</table>
+		<form id="search" action="<%=request.getContextPath()%>/main/index.do" method="post">
+			<select name="searchType">
+				<option value="subject">제목</option>
+				<option value="writer">작성자</option>
+			</select>
+			<input type="text" name="keyword">
+			<input type="submit" value="검색">
+		</form>
 <%if(session.getAttribute("midx") != null){ %>
 		<div id="writeDiv">
 			<button id="writeBtn" onclick="writePage()">글쓰기</button>
-		</div> <br> <br> <br>
+		</div> <br> <br>
 <%} %>
         <div class="page">
-        	&ltrif; 1 2 3 4 5 6 &rtrif;
+<% 
+	if(pm.isPrev() == true){
+		out.println("<a href='"+request.getContextPath()+"/main/index.do?page="+(pm.getStartPage()-1)+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>◀</a>");		
+	}
+	for(int i = pm.getStartPage(); i <= pm.getEndPage(); i++){
+		out.println("<a href='"+request.getContextPath()+"/main/index.do?page="+i+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>"+i+"</a>");
+	}
+	if(pm.isNext() && pm.getEndPage() > 0){
+		out.println("<a href='"+request.getContextPath()+"/main/index.do?page="+(pm.getEndPage()+1)+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>▶</a>");		
+	}
+%>
         </div>
     </section>
     <!-- Contact -->

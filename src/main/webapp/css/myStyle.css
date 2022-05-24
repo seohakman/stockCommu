@@ -43,11 +43,26 @@ thead {
   width: 100px;
 }
 
+#search {
+	width: 1200px;
+	margin: auto;
+	text-align: center;
+	padding-top:5px;
+}
+#search input, select{
+	height: 24px;
+}
 .page {
+	
 	width: 1200px;
 	margin: auto;
 	padding-top:10px;
     text-align: center;
+}
+.page a{
+	color: var(--color-dark-grey);
+	font-size: var(--font-small);
+	font-weight: var(--weight-semi-bold);
 }
 #writeDiv {
 	width: 1200px;
@@ -64,6 +79,9 @@ thead {
 @media screen and (max-width:1200px) {
   table{
     width: 90%;
+  }
+  #search {
+	width: 90%;
   }
   #writeDiv {
 	width: 90%;

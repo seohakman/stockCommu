@@ -30,7 +30,14 @@ public class FrontController extends HttpServlet {
 				 MemberController mc = new MemberController();
 				 mc.doPost(request, response); 
 			 }else if(location.equals("main")) {
-				 MainController mac = new MainController(); mac.doPost(request, response);
+				 MainController mac = new MainController(); 
+				 mac.doPost(request, response);
+			 }else if(location.equals("second")) {
+				 SecondController sc = new SecondController();
+				 sc.doPost(request, response);
+			 }else if(location.equals("nofify")) {
+				 NotifyController nc = new NotifyController();
+				 nc.doPost(request, response);
 			 }
 			 
 	}
