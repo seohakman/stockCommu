@@ -35,7 +35,7 @@ public class FrontController extends HttpServlet {
 			 }else if(location.equals("second")) {
 				 SecondController sc = new SecondController();
 				 sc.doPost(request, response);
-			 }else if(location.equals("nofify")) {
+			 }else if(location.equals("notify")) {
 				 NotifyController nc = new NotifyController();
 				 nc.doPost(request, response);
 			 }

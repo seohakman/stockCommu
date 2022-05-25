@@ -3,7 +3,7 @@
 <%@ page import="java.util.*"  %>
 <%@ page import="stockCommu.domain.*" %>
 <% 
-	ArrayList<MainVO> alist = (ArrayList<MainVO>)request.getAttribute("alist"); 
+	ArrayList<NotifyVO> alist = (ArrayList<NotifyVO>)request.getAttribute("alist"); 
 	PageMaker pm = (PageMaker)request.getAttribute("pm");
 %>
 <!DOCTYPE html>
@@ -21,7 +21,8 @@
 rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 />
-<title>추천 게시판</title>
+
+<title>공지사항</title>
 </head>
 <body>
 	<!-- Navbar -->
@@ -30,7 +31,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
         <i class="far fa-arrow-alt-circle-up"></i>
         <a href="<%= request.getContextPath()%>/main/index.do">StockSophia</a>
       </div>
-<% if(session.getAttribute("midx")==null){ 
+<% if(session.getAttribute("midx")==null){
 	session.setAttribute("saveUrl", request.getRequestURI().substring(0,request.getRequestURI().length()-3)+"do");
 %>
 	  <a id="login" href="<%= request.getContextPath()%>/member/memberLogin.do">로그인</a>
@@ -58,7 +59,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
     </nav>
     <!-- main content -->
     <section id="home">
-      <h1 id="homeTitle"> 추천 게시판 </h1>
+      <h1 id="homeTitle"> 공지사항 </h1>
 		<table>
 			<thead>
 				<tr>
@@ -70,35 +71,35 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 					<th class="b6">작성일</th>
 				</tr>
 			</thead>
-<% for(MainVO mv: alist){ 
+<% for(NotifyVO nv: alist){ 
 	if(session.getAttribute("midx") != null){ %>
 	<!-- 로그인 했을 경우에만 게시물 클릭 이동이 가능하게 한다. -->
 			<tbody>
              	<tr class="b">
-	                <td><%=mv.getBidx() %></td>
+	                <td><%=nv.getBidx() %></td>
 	                <td>
-	                	<a href="<%=request.getContextPath()%>/main/mainContent.do?bidx=<%=mv.getBidx()%>"><%=mv.getSubject()%></a>
+	                	<a href="<%=request.getContextPath()%>/notify/notifyContent.do?bidx=<%=nv.getBidx()%>"><%=nv.getSubject()%></a>
 	                </td>
-	                <td><%=mv.getWriter() %></td>
-	                <td><%=mv.getViewCount() %></td>
-	                <td><%=mv.getLikeCount() %></td>
-	                <td><%=mv.getWriteday() %></td>
+	                <td><%=nv.getWriter() %></td>
+	                <td><%=nv.getViewCount() %></td>
+	                <td><%=nv.getLikeCount() %></td>
+	                <td><%=nv.getWriteday() %></td>
              	</tr>
 			</tbody>
 <%}else{%>
 			<tbody>
              	<tr class="b">
-	                <td><%=mv.getBidx() %></td>
-	                <td><%=mv.getSubject()%></td>
-	                <td><%=mv.getWriter() %></td>
-	                <td><%=mv.getViewCount() %></td>
-	                <td><%=mv.getLikeCount() %></td>
-	                <td><%=mv.getWriteday() %></td>
+	                <td><%=nv.getBidx() %></td>
+	                <td><%=nv.getSubject()%></td>
+	                <td><%=nv.getWriter() %></td>
+	                <td><%=nv.getViewCount() %></td>
+	                <td><%=nv.getLikeCount() %></td>
+	                <td><%=nv.getWriteday() %></td>
              	</tr>
 			</tbody>
 <%}} %>
 		</table>
-		<form id="search" action="<%=request.getContextPath()%>/main/index.do" method="post">
+		<form id="search" action="<%=request.getContextPath()%>/notify/notifyBoard.do" method="post">
 			<select name="searchType">
 				<option value="subject">제목</option>
 				<option value="writer">작성자</option>
@@ -114,13 +115,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
         <div class="page">
 <% 
 	if(pm.isPrev() == true){
-		out.println("<a href='"+request.getContextPath()+"/main/index.do?page="+(pm.getStartPage()-1)+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>◀</a>");		
+		out.println("<a href='"+request.getContextPath()+"/notify/notifyBoard.do?page="+(pm.getStartPage()-1)+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>◀</a>");		
 	}
 	for(int i = pm.getStartPage(); i <= pm.getEndPage(); i++){
-		out.println("<a href='"+request.getContextPath()+"/main/index.do?page="+i+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>"+i+"</a>");
+		out.println("<a href='"+request.getContextPath()+"/notify/notifyBoard.do?page="+i+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>"+i+"</a>");
 	}
 	if(pm.isNext() && pm.getEndPage() > 0){
-		out.println("<a href='"+request.getContextPath()+"/main/index.do?page="+(pm.getEndPage()+1)+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>▶</a>");		
+		out.println("<a href='"+request.getContextPath()+"/notify/notifyBoard.do?page="+(pm.getEndPage()+1)+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>▶</a>");		
 	}
 %>
         </div>
@@ -137,7 +138,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 </body>
 <script>
 	function writePage(){
-		location.href="<%= request.getContextPath()%>/main/mainWrite.do";
+		location.href="<%= request.getContextPath()%>/notify/notifyWrite.do";
 	}
 </script>
 <script src="<%=request.getContextPath() %>/script/script.js"></script>
