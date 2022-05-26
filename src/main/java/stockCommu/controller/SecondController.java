@@ -14,8 +14,10 @@ import javax.servlet.http.HttpSession;
 
 import stockCommu.domain.SecondReplyVO;
 import stockCommu.domain.SecondVO;
+import stockCommu.domain.NotifyVO;
 import stockCommu.domain.PageMaker;
 import stockCommu.domain.SearchCriteria;
+import stockCommu.service.NotifyDAO;
 import stockCommu.service.SecondDAO;
 
 
@@ -56,6 +58,12 @@ public class SecondController extends HttpServlet {
 			int cnt = sdo.selectCount(scri);
 			pm.setScri(scri);
 			pm.setTotalCount(cnt);
+			
+			//공지사항 글을 가져오는 코드
+			NotifyDAO ndo = new NotifyDAO();
+			ArrayList<NotifyVO> nlist;
+			nlist = ndo.notifyingAll();
+			request.setAttribute("nlist", nlist);
 			
 			ArrayList<SecondVO> alist;
 			alist = sdo.secondSelectAll(scri);

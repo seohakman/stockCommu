@@ -1,12 +1,19 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="stockCommu.domain.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%
+	ArrayList<MemberVO> alist = (ArrayList<MemberVO>) request.getAttribute("alist");
+	PageMaker pm = (PageMaker) request.getAttribute("pm");
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/global.css" />
-<link rel="stylesheet" href="<%=request.getContextPath() %>/css/write.css" />
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/superMember.css" />
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap"
 			rel="stylesheet">
 <script src="https://kit.fontawesome.com/9eb162ac0d.js"
@@ -15,13 +22,7 @@
 rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 />
-<script>
-	function secondSubmit(){
-		document.fm.action="<%=request.getContextPath()%>/second/secondWriteAction.do";
-		document.fm.method="post";
-	}
-</script>
-<title>게시글 작성</title>
+<title>관리자 페이지</title>
 </head>
 <body>
 	<!-- Navbar -->
@@ -63,32 +64,52 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
     </nav>
     <!-- main content -->
     <section id="home">
-		<br><br><br>
-		<table >
-		<form name=fm>
-			<thead>
-				<tr>
-					<th><input id="subject" name="subject" type="text" placeholder="제목을 입력하세요" required></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><textarea id="content" name="content" placeholder="내용을 입력하세요" required></textarea></td>
-				</tr>
-			</tbody>
-			<tfoot>
-				<tr>
-					<td>
-						<button type="submit" onclick="secondSubmit()">등록</button>
-						<button type="button" onclick="history.back();">취소</button>
-					</td>
-				</tr>
-			</tfoot>
+      	<table id="superTable">
+      		<thead>
+      			<tr>
+      				<th>아이디</th>
+      				<th>이름</th>
+      				<th colspan="2">관리자 권한</th>
+      				<th>정지</th>
+      			</tr>
+      		</thead>
+      		<tbody>
+<%for(MemberVO mv: alist){ %>
+      			<tr>
+      				<td><%=mv.getId() %></td>
+      				<td><%=mv.getName() %></td>
+      				<td><button onclick="location.href='<%=request.getContextPath() %>/member/superMemberAdd.do?midx=<%=mv.getMidx()%>'">부여</button></td>
+      				<td><button onclick="location.href='<%=request.getContextPath() %>/member/superMemberDelete.do?midx=<%=mv.getMidx()%>'">제거</button></td>
+      				<td>
+<%	if(mv.getDelyn().equals("N")){ %>
+      				<button onclick="location.href='<%=request.getContextPath() %>/member/memberDelete.do?midx=<%=mv.getMidx()%>'">회원 정지</button>
+      				</td>
+      			</tr>
+<%}} %>
+      		</tbody>
+      	</table>
+    	<form id="search" action="<%=request.getContextPath()%>/member/superMember.do" method="post">
+			<select name="searchType">
+				<option value="id">아이디</option>
+				<option value="name">이름</option>
+			</select>
+			<input type="text" name="keyword">
+			<input type="submit" value="검색">
 		</form>
-        </table>
-		<br>
-		<div class="div-btn">
-		</div>
+		<!-- page -->
+        <div class="page">
+<% 
+	if(pm.isPrev() == true){
+		out.println("<a href='"+request.getContextPath()+"/member/superMember.do?page="+(pm.getStartPage()-1)+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>◀</a>");		
+	}
+	for(int i = pm.getStartPage(); i <= pm.getEndPage(); i++){
+		out.println("<a href='"+request.getContextPath()+"/member/superMember.do?page="+i+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>"+i+"</a>");
+	}
+	if(pm.isNext() && pm.getEndPage() > 0){
+		out.println("<a href='"+request.getContextPath()+"/member/superMember.do?page="+(pm.getEndPage()+1)+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>▶</a>");		
+	}
+%>
+        </div>
     </section>
     <!-- Contact -->
     <footer>

@@ -3,7 +3,8 @@
 <%@ page import="java.util.*"  %>
 <%@ page import="stockCommu.domain.*" %>
 <% 
-	ArrayList<SecondVO> alist = (ArrayList<SecondVO>)request.getAttribute("alist"); 
+	ArrayList<SecondVO> alist = (ArrayList<SecondVO>)request.getAttribute("alist");
+	ArrayList<NotifyVO> nlist = (ArrayList<NotifyVO>)request.getAttribute("nlist");
 	PageMaker pm = (PageMaker)request.getAttribute("pm");
 %>
 <!DOCTYPE html>
@@ -31,6 +32,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
         <i class="far fa-arrow-alt-circle-up"></i>
         <a href="<%= request.getContextPath()%>/main/index.do">StockSophia</a>
       </div>
+      		<!-- 세션에 midx값이 없을 경우 로그인버튼을 보여주고 아니면 회원 이름을 표시한다. -->
 <% if(session.getAttribute("midx")==null){ 
 	session.setAttribute("saveUrl", request.getRequestURI().substring(0,request.getRequestURI().length()-3)+"do");
 %>
@@ -44,10 +46,14 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
           <i class="fas fa-bars fa-2x"></i>
         </button>
         <div class="navbar__toggle_content" id="myDropdown">
+        	<!-- 로그인 했을 경우 로그아웃 버튼을 보여주고 아닌경우 회원가입 버튼을 보여줌 -->
 <%if(session.getAttribute("midx") != null){ %>
 		  <a href='<%= request.getContextPath()%>/member/memberLogoutAction.do'>로그아웃</a>
+		  <!-- 관리자일 경우 관리페이지 보여줌 -->
+<%	if(session.getAttribute("superMember").equals("Y")){ %>
+		  <a href='<%= request.getContextPath()%>/member/superMember.do'>관리페이지</a>
 <%	
-}else{
+}}else{
 %>
 		  <a href='<%= request.getContextPath()%>/member/memberJoin.do'>회원가입</a>
 <%} %>
@@ -71,10 +77,36 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 					<th class="b6">작성일</th>
 				</tr>
 			</thead>
+			<tbody>
+<% for(NotifyVO nv: nlist){ 
+	if(session.getAttribute("midx") != null){ %>
+	<!-- 공지사항 글 -->
+	<!-- 로그인 했을 경우에만 게시물 클릭 이동이 가능하게 한다. -->
+             	<tr class="b">
+	                <td><%=nv.getBidx() %></td>
+	                <td>
+	                	<a href="<%=request.getContextPath()%>/notify/notifyContent.do?bidx=<%=nv.getBidx()%>"><%=nv.getSubject()%></a>
+	                </td>
+	                <td><%=nv.getWriter() %></td>
+	                <td><%=nv.getViewCount() %></td>
+	                <td><%=nv.getLikeCount() %></td>
+	                <td><%=nv.getWriteday() %></td>
+             	</tr>
+			</tbody>
+<%}else{%>
+			<tbody>
+             	<tr class="b">
+	                <td><%=nv.getBidx() %></td>
+	                <td><%=nv.getSubject()%></td>
+	                <td><%=nv.getWriter() %></td>
+	                <td><%=nv.getViewCount() %></td>
+	                <td><%=nv.getLikeCount() %></td>
+	                <td><%=nv.getWriteday() %></td>
+             	</tr>
+<%}} %>
 <% for(SecondVO sv: alist){ 
 	if(session.getAttribute("midx") != null){ %>
 	<!-- 로그인 했을 경우에만 게시물 클릭 이동이 가능하게 한다. -->
-			<tbody>
              	<tr class="b">
 	                <td><%=sv.getBidx() %></td>
 	                <td>

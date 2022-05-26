@@ -167,7 +167,26 @@ public class NotifyController extends HttpServlet {
 			int value = ndo.notifyDelete(bidx);
 			
 			if(value==1) {
-				response.sendRedirect(pj+"/notify/index.do");
+				response.sendRedirect(pj+"/notify/notifyBoard.do");
+			}
+			
+		}else if(command.equals("/notify/notifyAction.do")) {
+			//공지사항 다른 게시판에 올리고 내리기
+			String type = request.getParameter("type");
+			int bidx = Integer.parseInt(request.getParameter("bidx"));
+			NotifyDAO ndo = new NotifyDAO();
+			
+			int value = ndo.notifyingType(type,bidx);
+			PrintWriter out = response.getWriter();
+			if(value==1 && type.equals("up")) {
+				out.println("<script>alert('공지사항에 등록하셨습니다.');"
+						+ "location.href='"+request.getContextPath()+"/notify/notifyBoard.do';</script>");
+			}else if(value==1 && type.equals("down")){
+				out.println("<script>alert('해제하셨습니다.');"
+						+ "location.href='"+request.getContextPath()+"/notify/notifyBoard.do';</script>");
+			}else {
+				out.println("<script>alert('실패했습니다.');"
+						+ "history.back();</script>");	
 			}
 			
 		}

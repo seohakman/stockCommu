@@ -16,9 +16,11 @@ import javax.websocket.Session;
 
 import stockCommu.domain.MainReplyVO;
 import stockCommu.domain.MainVO;
+import stockCommu.domain.NotifyVO;
 import stockCommu.domain.PageMaker;
 import stockCommu.domain.SearchCriteria;
 import stockCommu.service.MainDAO;
+import stockCommu.service.NotifyDAO;
 
 
 @WebServlet("/MainController")
@@ -58,6 +60,12 @@ public class MainController extends HttpServlet {
 			int cnt = mdo.selectCount(scri);
 			pm.setScri(scri);
 			pm.setTotalCount(cnt);
+			
+			//공지사항 글을 가져오는 코드
+			NotifyDAO ndo = new NotifyDAO();
+			ArrayList<NotifyVO> nlist;
+			nlist = ndo.notifyingAll();
+			request.setAttribute("nlist", nlist);
 			
 			ArrayList<MainVO> alist;
 			alist = mdo.mainSelectAll(scri);

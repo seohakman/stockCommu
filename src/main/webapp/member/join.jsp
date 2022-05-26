@@ -18,13 +18,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 <script type="text/javascript">
 
 	function check() {
-	if(document.fm.PWD.value != document.fm.PWDCheck.value){
-		alert("비밀번호가 일치하지 않습니다.");
-		document.fm.PWDCheck.focus();
-		return;
-	}
-	document.fm.action = "<%=request.getContextPath()%>/member/memberJoinAction.do";
-	document.fm.method = "post";
+		if(document.fm.PWD.value != document.fm.PWDCheck.value){
+			alert("비밀번호가 일치하지 않습니다.");
+			document.fm.PWDCheck.focus();
+			return;
+		}
+		document.fm.action = "<%=request.getContextPath()%>/member/memberJoinAction.do";
+		document.fm.method = "post";
 	}
 	
 	function checkedID(){

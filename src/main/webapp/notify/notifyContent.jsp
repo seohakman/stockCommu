@@ -22,7 +22,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 />
 <script>
 	function replyFn(){
-		document.fm.action="<%=request.getContextPath()%>/notify/notifyReplyAction.do?bidx=<%=nv.getBidx()%>&writer=<%=nv.getWriter()%>"
+		document.fm.action="<%=request.getContextPath()%>/notify/notifyReplyAction.do?bidx=<%=nv.getBidx()%>&writer=<%=session.getAttribute("id")%>"
 		document.fm.method="post";
 	}
 </script>
@@ -35,7 +35,10 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
         <i class="far fa-arrow-alt-circle-up"></i>
         <a href="<%= request.getContextPath()%>/main/index.do">StockSophia</a>
       </div>
-<% if(session.getAttribute("midx")==null){ %>
+      		<!-- 세션에 midx값이 없을 경우 로그인버튼을 보여주고 아니면 회원 이름을 표시한다. -->
+<% if(session.getAttribute("midx")==null){ 
+	session.setAttribute("saveUrl", request.getRequestURI().substring(0,request.getRequestURI().length()-3)+"do");
+%>
 	  <a id="login" href="<%= request.getContextPath()%>/member/memberLogin.do">로그인</a>
 <% }else{
 		out.println("<a id='login'>"+session.getAttribute("name") +"</a>");
@@ -46,10 +49,14 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
           <i class="fas fa-bars fa-2x"></i>
         </button>
         <div class="navbar__toggle_content" id="myDropdown">
+        	<!-- 로그인 했을 경우 로그아웃 버튼을 보여주고 아닌경우 회원가입 버튼을 보여줌 -->
 <%if(session.getAttribute("midx") != null){ %>
 		  <a href='<%= request.getContextPath()%>/member/memberLogoutAction.do'>로그아웃</a>
+		  <!-- 관리자일 경우 관리페이지 보여줌 -->
+<%	if(session.getAttribute("superMember").equals("Y")){ %>
+		  <a href='<%= request.getContextPath()%>/member/superMember.do'>관리페이지</a>
 <%	
-}else{
+}}else{
 %>
 		  <a href='<%= request.getContextPath()%>/member/memberJoin.do'>회원가입</a>
 <%} %>
@@ -94,6 +101,12 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 			location.href='<%=request.getContextPath()%>/notify/notifyContentDelete.do?bidx=<%=nv.getBidx()%>'">삭제</button>
 <%} %>
 		</div>
+<%if(session.getAttribute("superMember").equals("Y")){ %>
+		<div class="div-btn" style="margin-top:15px;">
+			<button onclick="location.href='<%=request.getContextPath() %>/notify/notifyAction.do?type=up&bidx=<%=nv.getBidx()%>'">공지하기</button>
+			<button onclick="location.href='<%=request.getContextPath() %>/notify/notifyAction.do?type=down&bidx=<%=nv.getBidx()%>'">공지내리기</button>
+		</div>
+<%} %>		
 		<br>
 		<!-- 댓글창 -->
 		<table id="replyTable">

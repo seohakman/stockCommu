@@ -10,6 +10,15 @@ public class MemberVO {
 	private String memberday;
 	private int point;
 	private String delyn;
+	private String supermember;
+	
+	
+	public String getSupermember() {
+		return supermember;
+	}
+	public void setSupermember(String supermember) {
+		this.supermember = supermember;
+	}
 	public int getMidx() {
 		return midx;
 	}

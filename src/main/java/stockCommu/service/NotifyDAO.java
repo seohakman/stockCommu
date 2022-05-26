@@ -273,8 +273,94 @@ public class NotifyDAO {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		} 
 		
 		return value;
 	}
+	
+	public int notifyingType(String type,int bidx) {
+		//공지사항의 글을 다른 게시판에 올리고 내리는 글인지 선택하는 메서드
+		int value = 0;
+		String str = "";
+		if(type.equals("up")) {
+			str = "Y";
+		}else if(type.equals("down")) {
+			str = "N";
+		}
+		
+		String sql = "update notify set notifying = '"+ str +"' where bidx = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, bidx);
+			value = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		return value;
+	}
+	
+	
+	public ArrayList<NotifyVO> notifyingAll(){
+		//공지 등록할 글만 가져온다.
+		ArrayList<NotifyVO> nlist = new ArrayList();
+		String sql= "select * from notify where notifying = 'Y'";
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				NotifyVO nv = new NotifyVO();
+				nv.setBidx(rs.getInt("bidx"));
+				nv.setSubject(rs.getString("subject"));
+				nv.setContent(rs.getString("content"));
+				nv.setWriteday(rs.getString("writeday"));
+				nv.setFilename(rs.getString("filename"));
+				nv.setViewCount(rs.getInt("viewcount"));
+				nv.setLikeCount(rs.getInt("likecount"));
+				nv.setMidx(rs.getInt("midx"));
+				nv.setWriter(rs.getString("writer"));
+				
+				nlist.add(nv);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return nlist;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

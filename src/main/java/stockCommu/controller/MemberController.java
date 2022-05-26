@@ -2,6 +2,7 @@ package stockCommu.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpSession;
 
 
 import stockCommu.domain.MemberVO;
+import stockCommu.domain.PageMaker;
+import stockCommu.domain.SearchCriteria;
 import stockCommu.service.MemberDAO;
 
 
@@ -100,6 +103,7 @@ public class MemberController extends HttpServlet {
 				session.setAttribute("id", mv.getId());
 				session.setAttribute("name", mv.getName());
 				session.setAttribute("point", mv.getPoint());
+				session.setAttribute("superMember", mv.getSupermember());
 				
 				// 3.이동
 				if(session.getAttribute("saveUrl") != null) {
@@ -149,6 +153,82 @@ public class MemberController extends HttpServlet {
 			}else {
 				out.println("<script>alert('아이디가 존재하지 않습니다.');"
 						+ "location.href='"+request.getContextPath()+"/member/findPWD.do'</script>");
+			}
+		}else if(command.equals("/member/superMember.do")) {
+			//관리자 페이지 입장
+			//검색 폼에서 파라미터를 받아온다.
+			String page = request.getParameter("page");
+			if(page==null) {page = "1";}
+			String searchType = request.getParameter("searchType");
+			if(searchType==null) {searchType = "id";}
+			String keyword = request.getParameter("keyword");
+			if(keyword==null) {keyword = "";}
+			
+			// 검색을 정의하는 클래스에 파라미터를 담는다.
+			SearchCriteria scri = new SearchCriteria();
+			scri.setPage(Integer.parseInt(page));
+			scri.setKeyword(keyword);
+			scri.setSearchType(searchType);
+			
+			//pageMaker로 page 정보 객체 생성
+			PageMaker pm = new PageMaker();
+			MemberDAO md = new MemberDAO();
+			int cnt = md.selectCount(scri);
+			pm.setScri(scri);
+			pm.setTotalCount(cnt);
+			
+			ArrayList<MemberVO> alist = new ArrayList();
+			alist = md.memberSelectAll(scri);
+			request.setAttribute("alist", alist);
+			request.setAttribute("pm", pm);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/member/superMember.jsp");
+			rd.forward(request, response);
+			
+		}else if(command.equals("/member/superMemberAdd.do")) {
+			//관리자 권한 부여하기
+			int midx = Integer.parseInt(request.getParameter("midx"));
+			
+			int value = 0;
+			MemberDAO md = new MemberDAO();
+			value = md.addSuper(midx);
+			PrintWriter out = response.getWriter();
+			if(value==1) {
+				out.println("<script>alert('관지자 권한 부여 성공');"
+						+"location.href='"+request.getContextPath()+"/member/superMember.do'</script>");
+			}else {
+				out.println("<script>alert('관지자 권한 부여 실패');"
+						+"location.href='"+request.getContextPath()+"/member/superMember.do'</script>");
+			}
+		}else if(command.equals("/member/superMemberDelete.do")) {
+			// 관리자 권한 제거
+			int midx = Integer.parseInt(request.getParameter("midx"));
+			
+			int value = 0;
+			MemberDAO md = new MemberDAO();
+			value = md.deleteSuper(midx);
+			PrintWriter out = response.getWriter();
+			if(value==1) {
+				out.println("<script>alert('관지자 권한 제거 성공');"
+						+"location.href='"+request.getContextPath()+"/member/superMember.do'</script>");
+			}else {
+				out.println("<script>alert('관지자 권한 제거 실패');"
+						+"location.href='"+request.getContextPath()+"/member/superMember.do'</script>");
+			}
+		}else if(command.equals("/member/memberDelete.do")) {
+			//멤버 정지 기능
+			int midx = Integer.parseInt(request.getParameter("midx"));
+			
+			int value = 0;
+			MemberDAO md = new MemberDAO();
+			value = md.deleteMember(midx);
+			PrintWriter out = response.getWriter();
+			if(value==1) {
+				out.println("<script>alert('회원 정지 성공');"
+						+"location.href='"+request.getContextPath()+"/member/superMember.do'</script>");
+			}else {
+				out.println("<script>alert('회원 정지 실패');"
+						+"location.href='"+request.getContextPath()+"/member/superMember.do'</script>");
 			}
 		}
 	}
