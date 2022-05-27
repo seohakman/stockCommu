@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 
 import stockCommu.domain.MemberVO;
+import stockCommu.domain.MyPageVO;
 import stockCommu.domain.PageMaker;
 import stockCommu.domain.SearchCriteria;
 import stockCommu.service.MemberDAO;
@@ -229,6 +230,73 @@ public class MemberController extends HttpServlet {
 			}else {
 				out.println("<script>alert('회원 정지 실패');"
 						+"location.href='"+request.getContextPath()+"/member/superMember.do'</script>");
+			}
+		}else if(command.equals("/member/myPofolAction.do")) {
+			//포폴에 입력하는 값을 받아서 수행
+			HttpSession session = request.getSession();
+			int midx = (int) session.getAttribute("midx");
+			String name = request.getParameter("name");
+			String price = request.getParameter("price");
+			String estimate = request.getParameter("estimate");
+			String eps = request.getParameter("eps");
+			String per = request.getParameter("per");
+			String pbr = request.getParameter("pbr");
+			String etc = request.getParameter("etc");
+			
+			MemberDAO md = new MemberDAO();
+			int value = md.insertPofol(midx, name, price, estimate, eps, per, pbr, etc);
+			PrintWriter out = response.getWriter();
+			if(value==1) {
+				out.println("<script>location.href='"+request.getContextPath()+"/member/mypage.do'</script>");
+			}else {
+				out.println("<script>alert('실패하였습니다.');"
+						+ "location.href='"+request.getContextPath()+"/member/mypage.do'</script>");
+			}
+		}else if(command.equals("/member/mypage.do")) {
+			//마이 페이지로 이동
+			HttpSession session = request.getSession();
+			int midx = (int) session.getAttribute("midx");
+			
+			MemberDAO md = new MemberDAO();
+			ArrayList<MyPageVO> alist = md.selectAllPofol(midx);
+			request.setAttribute("alist",alist);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/member/myPage.jsp");
+			rd.forward(request,response);
+			
+		}else if(command.equals("/member/myPofolModifyAction.do")) {
+			//마이포폴을 수정합니다.
+			int myidx = Integer.parseInt(request.getParameter("myidx"));
+			int midx = Integer.parseInt(request.getParameter("midx"));
+			String name = request.getParameter("name");
+			String price = request.getParameter("price");
+			String estimate = request.getParameter("estimate");
+			String eps = request.getParameter("eps");
+			String per = request.getParameter("per");
+			String pbr = request.getParameter("pbr");
+			String etc = request.getParameter("etc");
+			
+			MemberDAO md = new MemberDAO();
+			int value = md.modifyPofol(myidx, midx, name, price, estimate, eps, per, pbr, etc);
+			PrintWriter out = response.getWriter();
+			if(value==1) {
+				out.println("<script>location.href='"+request.getContextPath()+"/member/mypage.do'</script>");
+			}else {
+				out.println("<script>alert('실패하였습니다.');"
+						+ "location.href='"+request.getContextPath()+"/member/mypage.do'</script>");
+			}
+		}else if(command.equals("/member/myPofolDelete.do")) {
+			//마이포폴 데이터를 삭제~
+			int myidx = Integer.parseInt(request.getParameter("myidx"));
+			MemberDAO md = new MemberDAO();
+			int value = md.deletePofol(myidx);
+			PrintWriter out = response.getWriter();
+			if(value==1) {
+				out.println("<script>alert('삭제되었습니다.');"
+						+ "location.href='"+request.getContextPath()+"/member/mypage.do'</script>");
+			}else {
+				out.println("<script>alert('실패하였습니다.');"
+						+ "location.href='"+request.getContextPath()+"/member/mypage.do'</script>");
 			}
 		}
 	}

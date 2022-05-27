@@ -48,6 +48,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
         	<!-- 로그인 했을 경우 로그아웃 버튼을 보여주고 아닌경우 회원가입 버튼을 보여줌 -->
 <%if(session.getAttribute("midx") != null){ %>
 		  <a href='<%= request.getContextPath()%>/member/memberLogoutAction.do'>로그아웃</a>
+		  <a href='<%= request.getContextPath()%>/member/mypage.do'>마이페이지</a>
 		  <!-- 관리자일 경우 관리페이지 보여줌 -->
 <%	if(session.getAttribute("superMember").equals("Y")){ %>
 		  <a href='<%= request.getContextPath()%>/member/superMember.do'>관리페이지</a>
@@ -158,6 +159,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 	}
 %>
         </div>
+        <div class="fixed_content">fixed</div>
     </section>
     <!-- Contact -->
     <footer>

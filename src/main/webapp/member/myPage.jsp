@@ -1,15 +1,18 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="stockCommu.domain.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.*" %>
-<%@ page import="stockCommu.domain.*" %>
-<% SecondVO sv = (SecondVO)request.getAttribute("sv"); %>
+    
+<%
+	ArrayList<MyPageVO> alist = (ArrayList<MyPageVO>) request.getAttribute("alist");
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/global.css" />
-<link rel="stylesheet" href="<%=request.getContextPath() %>/css/write.css" />
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/myPage.css" />
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap"
 			rel="stylesheet">
 <script src="https://kit.fontawesome.com/9eb162ac0d.js"
@@ -18,13 +21,7 @@
 rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 />
-<script>
-	function secondModifySubmit(){
-		document.fm.action="<%=request.getContextPath()%>/second/secondContentModifyAction.do?bidx=<%= sv.getBidx()%>";
-		document.fm.method="post";
-	}
-</script>
-<title>게시글 수정</title>
+<title>마이 페이지</title>
 </head>
 <body>
 	<!-- Navbar -->
@@ -50,7 +47,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
         	<!-- 로그인 했을 경우 로그아웃 버튼을 보여주고 아닌경우 회원가입 버튼을 보여줌 -->
 <%if(session.getAttribute("midx") != null){ %>
 		  <a href='<%= request.getContextPath()%>/member/memberLogoutAction.do'>로그아웃</a>
-		  <a href='<%= request.getContextPath()%>/member/mypage.do'>마이페이지</a>
 		  <!-- 관리자일 경우 관리페이지 보여줌 -->
 <%	if(session.getAttribute("superMember").equals("Y")){ %>
 		  <a href='<%= request.getContextPath()%>/member/superMember.do'>관리페이지</a>
@@ -65,34 +61,57 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
         </div>
       </div>
     </nav>
-    <!-- main content -->
+	<!-- main content -->
     <section id="home">
-		<br><br><br>
-		<table >
-		<form name=fm>
-			<thead>
-				<tr>
-					<th><input id="subject" name="subject" type="text" value="<%=sv.getSubject() %>" required></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><textarea id="content" name="content" required><%=sv.getContent() %></textarea></td>
-				</tr>
-			</tbody>
-			<tfoot>
-				<tr>
-					<td>
-						<button type="submit" onclick="secondModifySubmit()">등록</button>
-						<button type="button" onclick="history.back();">취소</button>
-					</td>
-				</tr>
-			</tfoot>
-		</form>
-        </table>
-		<br>
-		<div class="div-btn">
-		</div>
+    	<table>
+    		<thead>
+    			<tr>
+    				<th colspan="7" class="tableCap">My Portfolio</th>
+    			</tr>
+    			<tr>
+    				<th>종목</th>
+    				<th>주당 가격</th>
+    				<th>추정치</th>
+    				<th>EPS</th>
+    				<th>PER</th>
+    				<th>PBR</th>
+    				<th>비고</th>
+    				<th colspan="2"></th>
+    			</tr>
+    		</thead>
+    		<tbody>
+<%for(MyPageVO mpv : alist){ %>
+    			<tr>
+	    		<!-- 회원이 저장한 포폴을 불러온다. -->
+	    		<form action="<%=request.getContextPath()%>/member/myPofolModifyAction.do?myidx=<%=mpv.getMyidx()%>&midx=<%=mpv.getMidx()%>" method="post">
+    				<td><input name="name" type="text" size="10" value="<%=mpv.getName() %>"></td>
+    				<td><input name="price" type="text" size="5" value="<%=mpv.getPrice()%>"></td>
+    				<td><input name="estimate" type="text" size="5" value="<%=mpv.getEstimate()%>"></td>
+    				<td><input name="eps" type="text" size="1" value="<%=mpv.getEps()%>"></td>
+    				<td><input name="per" type="text" size="1" value="<%=mpv.getPer()%>"></td>
+    				<td><input name="pbr" type="text" size="1" value="<%=mpv.getPbr()%>"></td>
+    				<td class="etc"><input name="etc" type="text" value="<%=mpv.getEtc()%>"></td>
+    				<td><button class="subBtn" type="submit">수정</button></td>
+    				<td><button class="subBtn" type="button" onclick="if(!confirm('삭제하시겠습니까?')){return false};
+			location.href='<%=request.getContextPath()%>/member/myPofolDelete.do?myidx=<%=mpv.getMyidx()%>'">삭제</button></td>
+	    		</form>
+    			</tr>
+<%} %>
+    			<tr>
+    			<!-- 새로운 포폴을 등록한다. -->
+    			<form action="<%=request.getContextPath()%>/member/myPofolAction.do" method="post" >
+    				<td><input name="name" type="text" size="10"></td>
+    				<td><input name="price" type="text" size="5"></td>
+    				<td><input name="estimate" type="text" size="5"></td>
+    				<td><input name="eps" type="text" size="1"></td>
+    				<td><input name="per" type="text" size="1"></td>
+    				<td><input name="pbr" type="text" size="1"></td>
+    				<td class="etc"><input name="etc" type="text"></td>
+    				<td><button class="subBtn" type="submit">등록</button></td>
+	    		</form>
+    			</tr>
+    		</tbody>
+    	</table>
     </section>
     <!-- Contact -->
     <footer>

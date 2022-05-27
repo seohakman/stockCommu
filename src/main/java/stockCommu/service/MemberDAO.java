@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import stockCommu.dbconn.Dbconn;
 import stockCommu.domain.MemberVO;
+import stockCommu.domain.MyPageVO;
 import stockCommu.domain.SearchCriteria;
 
 public class MemberDAO {
@@ -305,6 +306,7 @@ public class MemberDAO {
 	}
 	
 	public int deleteMember(int midx) {
+		//회원 정지 메서드
 		int value = 0;
 		String sql = "update member set delyn = 'Y' where midx = ?";
 		
@@ -319,7 +321,109 @@ public class MemberDAO {
 		return value;
 	}
 	
+	public int insertPofol(int midx, String name, String price, String estimate, String eps, String per, String pbr, String etc) {
+		//마이페이지 포폴에 새로운 객체를 등록한다.
+		int value = 0;
+		String sql = "insert into mypage(myidx, midx, name, price,estimate, eps, per, pbr, etc) values(myidx.nextval, ?,?,?,?,?,?,?,?)";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, midx);
+			pstmt.setString(2, name);
+			pstmt.setString(3,price);
+			pstmt.setString(4, estimate);
+			pstmt.setString(5, eps);
+			pstmt.setString(6,per);
+			pstmt.setString(7, pbr);
+			pstmt.setString(8,etc);
+			value = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return value;
+	}
 	
+	public ArrayList<MyPageVO> selectAllPofol(int midx){
+		//DB의 포폴을 가져오는 메서드
+		ArrayList<MyPageVO> alist = new ArrayList();
+		String sql = "select * from mypage where midx = ? order by myidx asc";
+		ResultSet rs = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, midx);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				MyPageVO mpv = new MyPageVO();
+				mpv.setName(rs.getString("name"));
+				mpv.setPrice(rs.getString("price"));
+				mpv.setEstimate(rs.getString("estimate"));
+				mpv.setEps(rs.getString("eps"));
+				mpv.setPer(rs.getString("per"));
+				mpv.setPbr(rs.getString("pbr"));
+				mpv.setEtc(rs.getString("etc"));
+				mpv.setMidx(rs.getInt("midx"));
+				mpv.setMyidx(rs.getInt("myidx"));
+				
+				
+				alist.add(mpv);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				rs.close();
+				pstmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return alist;
+	}
+	
+	public int modifyPofol(int myidx,int midx, String name, String price, String estimate, String eps, String per, String pbr, String etc) {
+		int value = 0;
+		
+		String sql = "update mypage set name = ?, price = ?, estimate = ?, eps = ?, per = ?, pbr = ?, etc = ? where myidx = ? and midx = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, name);
+			pstmt.setString(2,price);
+			pstmt.setString(3, estimate);
+			pstmt.setString(4, eps);
+			pstmt.setString(5,per);
+			pstmt.setString(6, pbr);
+			pstmt.setString(7,etc);
+			pstmt.setInt(8, myidx);
+			pstmt.setInt(9, midx);
+			value = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return value;
+	}
+	
+	public int deletePofol(int myidx) {
+		int value = 0;
+		String sql = "delete from mypage where myidx = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, myidx);
+			value = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return value;
+	}
 	
 	
 	

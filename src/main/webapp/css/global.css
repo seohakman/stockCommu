@@ -143,6 +143,11 @@ p {
 }
 
 /* contact */
+.fixed_content{
+	position:absolute;
+	padding-bottom: 64px;
+	color:white;
+}
 footer {
   width: 100%;
   position: fixed;
