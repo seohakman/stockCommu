@@ -425,7 +425,28 @@ public class MemberDAO {
 		return value;
 	}
 	
-	
+	public int modifyPassword(int midx, String password) {
+		int value = 0 ;
+		String sql = "update member set pwd = ? where midx = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, password);
+			pstmt.setInt(2, midx);
+			value = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				pstmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return value;
+	}
 	
 	
 	

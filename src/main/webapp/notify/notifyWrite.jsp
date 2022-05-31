@@ -19,6 +19,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 	function notifySubmit(){
 		document.fm.action="<%=request.getContextPath()%>/notify/notifyWriteAction.do";
 		document.fm.method="post";
+		document.fm.enctype="multipart/form-data";
 	}
 </script>
 <title>게시글 작성</title>
@@ -65,8 +66,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
     <!-- main content -->
     <section id="home">
 		<br><br><br>
-		<table >
 		<form name=fm>
+		<table >
 			<thead>
 				<tr>
 					<th><input id="subject" name="subject" type="text" placeholder="제목을 입력하세요" required></th>
@@ -75,6 +76,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 			<tbody>
 				<tr>
 					<td><textarea id="content" name="content" placeholder="내용을 입력하세요" required></textarea></td>
+				</tr>
+				<tr>
+					<td id="filePath"> <input name="filename" type="file"> </td>
 				</tr>
 			</tbody>
 			<tfoot>
@@ -85,8 +89,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 					</td>
 				</tr>
 			</tfoot>
-		</form>
         </table>
+		</form>
 		<br>
 		<div class="div-btn">
 		</div>

@@ -1,4 +1,14 @@
-/* Main Content */
+/* mypage nav */
+#mpDiv {
+	background-color: var(--color-light-green);
+	font-weight: var(--weight-semi-bold);
+	text-align: center;
+	padding-bottom: 5px;
+}
+#mpDiv a {
+	margin: 10px;
+}
+/* MyPage Main Content */
 #homeTitle {
 	color: var(--color-dark-grey);
   	text-align: center;
@@ -45,6 +55,19 @@ input{
 	border-radius: 5px;
 	padding: 2px;
 }
+
+/* MyPassword Main Content */
+.myPassword {
+	width: 400px;
+}
+
+.pSubBtn {
+	background-color: var(--color-white);
+	border: 2px solid var(--color-light-green);
+	border-radius: 5px;
+}
+
+
 
 @media screen and (max-width:900px) {
 	table {

@@ -21,9 +21,9 @@ public class MainDAO {
 		this.conn = db.getConnection();
 	}
 	
-	public int insertMain(String subject, String content, String ID, int midx) {
+	public int insertMain(String subject, String content, String ID, int midx, String fileName) {
 		int value = 0;
-		String sql = "insert into main(bidx,subject,content,midx,writer,viewcount,likecount) values(bidx_main.nextval,?,?,?,?,?,?)";
+		String sql = "insert into main(bidx,subject,content,midx,writer,viewcount,likecount,filename) values(bidx_main.nextval,?,?,?,?,?,?,?)";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -33,7 +33,7 @@ public class MainDAO {
 			pstmt.setString(4, ID);
 			pstmt.setInt(5, 0);
 			pstmt.setInt(6, 0);
-			
+			pstmt.setString(7, fileName);
 			value = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -151,14 +151,15 @@ public class MainDAO {
 		return value;
 	}
 	
-	public int mainModify(int bidx, String subject, String content) {
+	public int mainModify(int bidx, String subject, String content, String fileName) {
 		int value = 0;
-		String sql = "update main set subject= ?, content= ? where bidx= ?";
+		String sql = "update main set subject= ?, content= ?, filename=? where bidx= ?";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, subject);
 			pstmt.setString(2, content);
-			pstmt.setInt(3, bidx);
+			pstmt.setString(3, fileName);
+			pstmt.setInt(4, bidx);
 			value = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {

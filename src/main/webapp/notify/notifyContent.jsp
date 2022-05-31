@@ -84,6 +84,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 					<td colspan="4"><%= nv.getContent() %></td>
 				</tr>
 				<tr>
+					<td colspan="4"><img alt="" src="<%=request.getContextPath()%>/imgs/<%=nv.getFilename()%>"></td>
+				</tr>
+				<tr>
 					<td colspan="4" id="count">
 						<div>추천수 : <%= nv.getLikeCount() %></div>
 						<div>조회수 : <%= nv.getViewCount() %></div>

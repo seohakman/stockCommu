@@ -22,6 +22,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 	function mainModifySubmit(){
 		document.fm.action="<%=request.getContextPath()%>/main/mainContentModifyAction.do?bidx=<%= mv.getBidx()%>";
 		document.fm.method="post";
+		document.fm.enctype="multipart/form-data";
 	}
 </script>
 <title>게시글 수정</title>
@@ -78,6 +79,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 			<tbody>
 				<tr>
 					<td><textarea id="content" name="content" required><%=mv.getContent() %></textarea></td>
+				</tr>
+				<tr>
+					<td id="filePath"> <input name="filename" type="file"> </td>
 				</tr>
 			</tbody>
 			<tfoot>

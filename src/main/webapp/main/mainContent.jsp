@@ -84,6 +84,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 					<td colspan="4"><%= mv.getContent() %></td>
 				</tr>
 				<tr>
+					<td colspan="4">
+						<img alt="" src="<%=request.getContextPath()%>/imgs/<%=mv.getFilename()%>">
+					</td>
+				</tr>
+				<tr>
 					<td colspan="4" id="count">
 						<div>추천수 : <%= mv.getLikeCount() %></div>
 						<div>조회수 : <%= mv.getViewCount() %></div>

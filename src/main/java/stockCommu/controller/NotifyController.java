@@ -3,6 +3,7 @@ package stockCommu.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,6 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import stockCommu.domain.NotifyReplyVO;
 import stockCommu.domain.NotifyVO;
@@ -34,6 +38,10 @@ public class NotifyController extends HttpServlet {
 		// 프로젝트 이름을 뺀 나머지 가상경로를 추출
 		String command = uri.substring(pj.length());
 		System.out.println("command : " + command );
+		
+		String uploadPath = "D:\\open API (A)\\Dev\\stockCommu\\src\\main\\webapp\\";
+		String saveFolder = "imgs";
+		String saveFullPath = uploadPath + saveFolder;
 		
 		if(command.equals("/notify/notifyBoard.do")) {
 			//공지사항페이지로 이동
@@ -71,14 +79,21 @@ public class NotifyController extends HttpServlet {
 			rd.forward(request, response);
 		}else if(command.equals("/notify/notifyWriteAction.do")) {
 			//작성한 글을 DB에 넣는다.
+			int sizeLimit = 1204*1024*15;
+			MultipartRequest multi = new MultipartRequest(request, saveFullPath, sizeLimit, "utf-8", new DefaultFileRenamePolicy());
+			Enumeration files = multi.getFileNames();
+			String file = (String)files.nextElement();
+			String fileName = multi.getFilesystemName(file);
+			String originFileName = multi.getOriginalFileName(file);
+			
 			HttpSession session = request.getSession();
-			String subject = request.getParameter("subject");
-			String content = request.getParameter("content");
+			String subject = multi.getParameter("subject");
+			String content = multi.getParameter("content");
 			String id = (String) session.getAttribute("id");
 			int midx = (int)session.getAttribute("midx");
 
 			NotifyDAO ndo = new NotifyDAO();
-			int value = ndo.insertNotify(subject, content, id, midx);
+			int value = ndo.insertNotify(subject, content, id, midx, fileName);
 			PrintWriter out = response.getWriter();
 			if(value == 1) {
 				response.sendRedirect(pj+"/notify/notifyBoard.do");
@@ -134,12 +149,19 @@ public class NotifyController extends HttpServlet {
 			rd.forward(request, response);
 		}else if(command.equals("/notify/notifyContentModifyAction.do")) {
 			//글 수정페이지에서 등록버튼을 눌럿을경우 DB에서 해당 글을 업데이트 한다.
+			int sizeLimit = 1204*1024*15;
+			MultipartRequest multi = new MultipartRequest(request, saveFullPath, sizeLimit, "utf-8", new DefaultFileRenamePolicy());
+			Enumeration files = multi.getFileNames();
+			String file = (String)files.nextElement();
+			String fileName = multi.getFilesystemName(file);
+			String originFileName = multi.getOriginalFileName(file);
+			
 			int bidx = Integer.parseInt(request.getParameter("bidx"));
-			String subject = request.getParameter("subject");
-			String content = request.getParameter("content");
+			String subject = multi.getParameter("subject");
+			String content = multi.getParameter("content");
 			
 			NotifyDAO ndo = new NotifyDAO();
-			int value = ndo.notifyModify(bidx, subject, content);
+			int value = ndo.notifyModify(bidx, subject, content, fileName);
 			PrintWriter out = response.getWriter();
 			if(value==1) {
 				response.sendRedirect(pj+"/notify/notifyContent.do?bidx="+bidx);
@@ -151,6 +173,7 @@ public class NotifyController extends HttpServlet {
 			String content = request.getParameter("notifyReply");
 			String writer = request.getParameter("writer");
 			int bidx = Integer.parseInt(request.getParameter("bidx"));
+			System.out.println(bidx);
 			
 			NotifyDAO ndo = new NotifyDAO();
 			int value = ndo.insertReply(content, writer, bidx);

@@ -21,9 +21,9 @@ public class NotifyDAO {
 		this.conn = db.getConnection();
 	}
 	
-	public int insertNotify(String subject, String content, String ID, int midx) {
+	public int insertNotify(String subject, String content, String ID, int midx,String fileName) {
 		int value = 0;
-		String sql = "insert into notify(bidx,subject,content,midx,writer,viewcount,likecount) values(bidx_notify.nextval,?,?,?,?,?,?)";
+		String sql = "insert into notify(bidx,subject,content,midx,writer,viewcount,likecount, filename) values(bidx_notify.nextval,?,?,?,?,?,?,?)";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -33,6 +33,7 @@ public class NotifyDAO {
 			pstmt.setString(4, ID);
 			pstmt.setInt(5, 0);
 			pstmt.setInt(6, 0);
+			pstmt.setString(7, fileName);
 			
 			value = pstmt.executeUpdate();
 			
@@ -149,14 +150,15 @@ public class NotifyDAO {
 		return value;
 	}
 	
-	public int notifyModify(int bidx, String subject, String content) {
+	public int notifyModify(int bidx, String subject, String content, String fileName) {
 		int value = 0;
-		String sql = "update notify set subject= ?, content= ? where bidx= ?";
+		String sql = "update notify set subject= ?, content= ?, filename = ? where bidx= ?";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, subject);
 			pstmt.setString(2, content);
-			pstmt.setInt(3, bidx);
+			pstmt.setString(3, fileName);
+			pstmt.setInt(4, bidx);
 			value = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {

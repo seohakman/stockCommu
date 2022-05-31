@@ -3,6 +3,7 @@ package stockCommu.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import stockCommu.domain.MainReplyVO;
 import stockCommu.domain.MainVO;
@@ -37,6 +40,10 @@ public class MainController extends HttpServlet {
 		// 프로젝트 이름을 뺀 나머지 가상경로를 추출
 		String command = uri.substring(pj.length());
 		System.out.println("command : " + command );
+		
+		String uploadPath = "D:\\open API (A)\\Dev\\stockCommu\\src\\main\\webapp\\";
+		String saveFolder = "imgs";
+		String saveFullPath = uploadPath + saveFolder;
 		
 		if(command.equals("/main/index.do")) {
 			//메인페이지로 이동
@@ -80,14 +87,26 @@ public class MainController extends HttpServlet {
 			rd.forward(request, response);
 		}else if(command.equals("/main/mainWriteAction.do")) {
 			//작성한 글을 DB에 넣는다.
+			int sizeLimit = 1204*1024*15;
+			MultipartRequest multi = new MultipartRequest(request, saveFullPath, sizeLimit, "utf-8", new DefaultFileRenamePolicy());
+			
 			HttpSession session = request.getSession();
-			String subject = request.getParameter("subject");
-			String content = request.getParameter("content");
+			String subject = multi.getParameter("subject");
+			String content = multi.getParameter("content");
 			String id = (String) session.getAttribute("id");
 			int midx = (int)session.getAttribute("midx");
-
+			
+			// 열거자에 저장될 파일을 담는 객체를 생성한다.
+			Enumeration files = multi.getFileNames();
+			// 담긴 파일객체의 파일 이름을 얻는다.
+			String file = (String)files.nextElement();
+			//저장되는 파일 이름
+			String fileName = multi.getFilesystemName(file);
+			//원래 파일 이름
+			String originFileName = multi.getOriginalFileName(file);
+			
 			MainDAO mdo = new MainDAO();
-			int value = mdo.insertMain(subject, content, id, midx);
+			int value = mdo.insertMain(subject, content, id, midx, fileName);
 			PrintWriter out = response.getWriter();
 			if(value == 1) {
 				response.sendRedirect(pj+"/main/index.do");
@@ -104,7 +123,6 @@ public class MainController extends HttpServlet {
 			MainVO mv = null;
 			mv = mdo.mainSelectOne(bidx);
 			request.setAttribute("mv", mv);
-			
 			// 해당 글의 댓글 가져오는 작업
 			ArrayList<MainReplyVO> mlist = mdo.replyMain(bidx);
 			request.setAttribute("mlist", mlist);
@@ -143,12 +161,20 @@ public class MainController extends HttpServlet {
 			rd.forward(request, response);
 		}else if(command.equals("/main/mainContentModifyAction.do")) {
 			//글 수정페이지에서 등록버튼을 눌럿을경우 DB에서 해당 글을 업데이트 한다.
+			int sizeLimit = 1204*1024*15;
+			MultipartRequest multi = new MultipartRequest(request, saveFullPath, sizeLimit, "utf-8", new DefaultFileRenamePolicy());
+
 			int bidx = Integer.parseInt(request.getParameter("bidx"));
-			String subject = request.getParameter("subject");
-			String content = request.getParameter("content");
+			String subject = multi.getParameter("subject");
+			String content = multi.getParameter("content");
+			
+			Enumeration files = multi.getFileNames();
+			String file = (String)files.nextElement();
+			String fileName = multi.getFilesystemName(file);
+			String originFileName = multi.getOriginalFileName(file);
 			
 			MainDAO mdo = new MainDAO();
-			int value = mdo.mainModify(bidx, subject, content);
+			int value = mdo.mainModify(bidx, subject, content, fileName);
 			PrintWriter out = response.getWriter();
 			if(value==1) {
 				response.sendRedirect(pj+"/main/mainContent.do?bidx="+bidx);

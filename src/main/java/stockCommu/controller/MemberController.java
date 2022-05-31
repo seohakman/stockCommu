@@ -105,7 +105,7 @@ public class MemberController extends HttpServlet {
 				session.setAttribute("name", mv.getName());
 				session.setAttribute("point", mv.getPoint());
 				session.setAttribute("superMember", mv.getSupermember());
-				
+				session.setAttribute("password", mv.getPwd());
 				// 3.이동
 				if(session.getAttribute("saveUrl") != null) {
 					response.sendRedirect((String)session.getAttribute("saveUrl"));
@@ -297,6 +297,45 @@ public class MemberController extends HttpServlet {
 			}else {
 				out.println("<script>alert('실패하였습니다.');"
 						+ "location.href='"+request.getContextPath()+"/member/mypage.do'</script>");
+			}
+		}else if(command.equals("/member/mypagePassword.do")) {
+			//비밀번호 변경 페이지로 이동
+			RequestDispatcher rd = request.getRequestDispatcher("/member/myPagePassword.jsp");
+			rd.forward(request, response);
+		}else if(command.equals("/member/mypagePasswordAction.do")) {
+			//비밀번호를 변경하는 페이지로 이동 전에  본인확인하는 작업
+			HttpSession session = request.getSession();
+			String id = (String) session.getAttribute("id");
+			String password = request.getParameter("password");
+			
+			MemberDAO md = new MemberDAO();
+			MemberVO mv = new MemberVO();
+			mv = md.findMemberOne(id, password);
+			
+			if(mv != null) {
+				RequestDispatcher rd = request.getRequestDispatcher("/member/myPageChangePassword.jsp");
+				rd.forward(request, response);
+			}else {
+				PrintWriter out = response.getWriter();
+				out.println("<script>alert('틀렸습니다.'); history.back();</script>");
+			}
+			
+		}else if(command.equals("/member/mypageChangePasswordAction.do")) {
+			HttpSession session = request.getSession();
+			String password = request.getParameter("password");
+			int midx = (int) session.getAttribute("midx");
+			
+			PrintWriter out = response.getWriter();
+			if(password.equals((String)session.getAttribute("password"))) {
+				out.println("<script>alert('이전 비밀번호와 같습니다.'); location.href='"+request.getContextPath()+"/member/myPageChangePassword.jsp' </script>");
+			}
+			
+			MemberDAO md = new MemberDAO();
+			int value = md.modifyPassword(midx, password);
+			if(value == 1) {
+				out.println("<script> alert('변경되었습니다. 다시 로그인 하세요'); location.href='"+request.getContextPath()+"/member/memberLogin.do' </script>");
+			}else {
+				out.println("<script> alert('실패했습니다.'); history.back(); </script>");
 			}
 		}
 	}

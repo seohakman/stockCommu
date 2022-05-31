@@ -21,10 +21,10 @@
 rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 />
-<title>마이 페이지</title>
+<title>마이 페이지 - 포트폴리오</title>
 </head>
 <body>
-	<!-- Navbar -->
+	<!-- 가로 Navbar -->
     <nav id="navbar">
       <div class="navbar__logo">
         <i class="far fa-arrow-alt-circle-up"></i>
@@ -60,6 +60,15 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
           <a href="<%= request.getContextPath()%>/notify/notifyBoard.do">공지사항</a>
         </div>
       </div>
+    </nav>
+    <!-- mypage nav -->
+    <nav id="mpDiv">
+    	<div>
+    		<a href='<%= request.getContextPath()%>/member/mypage.do'>포트폴리오</a>
+    		<a href='<%= request.getContextPath()%>/member/mygraph.do'>자산추이</a>
+    		<a href='<%= request.getContextPath()%>/member/myscrap.do'>스크랩</a>
+    		<a href='<%= request.getContextPath()%>/member/mypagePassword.do'>비밀번호 변경</a>
+    	</div>
     </nav>
 	<!-- main content -->
     <section id="home">

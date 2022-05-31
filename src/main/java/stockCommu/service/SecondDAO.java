@@ -21,10 +21,10 @@ public class SecondDAO {
 		this.conn = db.getConnection();
 	}
 	
-	public int insertSecond(String subject, String content, String ID, int midx) {
+	public int insertSecond(String subject, String content, String ID, int midx, String fileName) {
 		//자유게시판에 DB에 글 삽입
 		int value = 0;
-		String sql = "insert into second(bidx,subject,content,midx,writer,viewcount,likecount) values(bidx_second.nextval,?,?,?,?,?,?)";
+		String sql = "insert into second(bidx,subject,content,midx,writer,viewcount,likecount,filename) values(bidx_second.nextval,?,?,?,?,?,?,?)";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -34,6 +34,7 @@ public class SecondDAO {
 			pstmt.setString(4, ID);
 			pstmt.setInt(5, 0);
 			pstmt.setInt(6, 0);
+			pstmt.setString(7, fileName);
 			
 			value = pstmt.executeUpdate();
 			
@@ -151,15 +152,16 @@ public class SecondDAO {
 		return value;
 	}
 	
-	public int secondModify(int bidx, String subject, String content) {
+	public int secondModify(int bidx, String subject, String content, String fileName) {
 		//작성글 수정 메서드
 		int value = 0;
-		String sql = "update second set subject= ?, content= ? where bidx= ?";
+		String sql = "update second set subject= ?, content= ?, filename = ? where bidx= ?";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, subject);
 			pstmt.setString(2, content);
-			pstmt.setInt(3, bidx);
+			pstmt.setString(3, fileName);
+			pstmt.setInt(4, bidx);
 			value = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {

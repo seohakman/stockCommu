@@ -3,6 +3,7 @@ package stockCommu.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,6 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import stockCommu.domain.SecondReplyVO;
 import stockCommu.domain.SecondVO;
@@ -35,6 +39,10 @@ public class SecondController extends HttpServlet {
 		// 프로젝트 이름을 뺀 나머지 가상경로를 추출
 		String command = uri.substring(pj.length());
 		System.out.println("command : " + command );
+		
+		String uploadPath = "D:\\open API (A)\\Dev\\stockCommu\\src\\main\\webapp\\";
+		String saveFolder = "imgs";
+		String saveFullPath = uploadPath + saveFolder;
 		
 		if(command.equals("/second/secondBoard.do")) {
 			//자유게시판으로 이동
@@ -78,14 +86,21 @@ public class SecondController extends HttpServlet {
 			rd.forward(request, response);
 		}else if(command.equals("/second/secondWriteAction.do")) {
 			//작성한 글을 DB에 넣는다.
+			int sizeLimit = 1204*1024*15;
+			MultipartRequest multi = new MultipartRequest(request, saveFullPath, sizeLimit, "utf-8", new DefaultFileRenamePolicy());
+			Enumeration files = multi.getFileNames();
+			String file = (String)files.nextElement();
+			String fileName = multi.getFilesystemName(file);
+			String originFileName = multi.getOriginalFileName(file);
+			
 			HttpSession session = request.getSession();
-			String subject = request.getParameter("subject");
-			String content = request.getParameter("content");
+			String subject = multi.getParameter("subject");
+			String content = multi.getParameter("content");
 			String id = (String) session.getAttribute("id");
 			int midx = (int)session.getAttribute("midx");
 
 			SecondDAO sdo = new SecondDAO();
-			int value = sdo.insertSecond(subject, content, id, midx);
+			int value = sdo.insertSecond(subject, content, id, midx, fileName);
 			PrintWriter out = response.getWriter();
 			if(value == 1) {
 				response.sendRedirect(pj+"/second/secondBoard.do");
@@ -102,7 +117,7 @@ public class SecondController extends HttpServlet {
 			SecondVO sv = null;
 			sv = sdo.secondSelectOne(bidx);
 			request.setAttribute("sv", sv);
-			
+			System.out.println(sv.getFilename());
 			// 해당 글의 댓글 가져오는 작업
 			ArrayList<SecondReplyVO> slist = sdo.replySecond(bidx);
 			request.setAttribute("slist", slist);
@@ -141,12 +156,19 @@ public class SecondController extends HttpServlet {
 			rd.forward(request, response);
 		}else if(command.equals("/second/secondContentModifyAction.do")) {
 			//글 수정페이지에서 등록버튼을 눌럿을경우 DB에서 해당 글을 업데이트 한다.
+			int sizeLimit = 1204*1024*15;
+			MultipartRequest multi = new MultipartRequest(request, saveFullPath, sizeLimit, "utf-8", new DefaultFileRenamePolicy());
+			Enumeration files = multi.getFileNames();
+			String file = (String)files.nextElement();
+			String fileName = multi.getFilesystemName(file);
+			String originFileName = multi.getOriginalFileName(file);
+			
 			int bidx = Integer.parseInt(request.getParameter("bidx"));
-			String subject = request.getParameter("subject");
-			String content = request.getParameter("content");
+			String subject = multi.getParameter("subject");
+			String content = multi.getParameter("content");
 			
 			SecondDAO sdo = new SecondDAO();
-			int value = sdo.secondModify(bidx, subject, content);
+			int value = sdo.secondModify(bidx, subject, content, fileName);
 			PrintWriter out = response.getWriter();
 			if(value==1) {
 				response.sendRedirect(pj+"/second/secondContent.do?bidx="+bidx);

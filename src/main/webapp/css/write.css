@@ -14,6 +14,10 @@ tbody {
   border-bottom: 3px solid var(--color-dark-grey);
 }
 
+#filePath {
+	text-align: left;
+}
+
 .div-btn {
 text-align: center;
 }

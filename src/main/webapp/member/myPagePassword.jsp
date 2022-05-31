@@ -1,12 +1,18 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="stockCommu.domain.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%
+	ArrayList<MyPageVO> alist = (ArrayList<MyPageVO>) request.getAttribute("alist");
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/global.css" />
-<link rel="stylesheet" href="<%=request.getContextPath() %>/css/write.css" />
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/myPage.css" />
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap"
 			rel="stylesheet">
 <script src="https://kit.fontawesome.com/9eb162ac0d.js"
@@ -15,17 +21,10 @@
 rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 />
-<script>
-	function mainSubmit(){
-		document.fm.action="<%=request.getContextPath()%>/main/mainWriteAction.do";
-		document.fm.method="post";
-		document.fm.enctype="multipart/form-data"; 
-	}
-</script>
-<title>게시글 작성</title>
+<title>마이 페이지 - 비밀번호 변경</title>
 </head>
 <body>
-	<!-- Navbar -->
+	<!-- 가로 Navbar -->
     <nav id="navbar">
       <div class="navbar__logo">
         <i class="far fa-arrow-alt-circle-up"></i>
@@ -48,7 +47,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
         	<!-- 로그인 했을 경우 로그아웃 버튼을 보여주고 아닌경우 회원가입 버튼을 보여줌 -->
 <%if(session.getAttribute("midx") != null){ %>
 		  <a href='<%= request.getContextPath()%>/member/memberLogoutAction.do'>로그아웃</a>
-		  <a href='<%= request.getContextPath()%>/member/mypage.do'>마이페이지</a>
 		  <!-- 관리자일 경우 관리페이지 보여줌 -->
 <%	if(session.getAttribute("superMember").equals("Y")){ %>
 		  <a href='<%= request.getContextPath()%>/member/superMember.do'>관리페이지</a>
@@ -63,37 +61,32 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
         </div>
       </div>
     </nav>
-    <!-- main content -->
+    <!-- mypage nav -->
+    <nav id="mpDiv">
+    	<div>
+    		<a href='<%= request.getContextPath()%>/member/mypage.do'>포트폴리오</a>
+    		<a href='<%= request.getContextPath()%>/member/mygraph.do'>자산추이</a>
+    		<a href='<%= request.getContextPath()%>/member/myscrap.do'>스크랩</a>
+    		<a href='<%= request.getContextPath()%>/member/mypagePassword.do'>비밀번호 변경</a>
+    	</div>
+    </nav>
+	<!-- main content -->
     <section id="home">
-		<br><br><br>
-		<form name=fm>
-		<table >
-			<thead>
-				<tr>
-					<th><input id="subject" name="subject" type="text" placeholder="제목을 입력하세요" required></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><textarea id="content" name="content" placeholder="내용을 입력하세요" required></textarea></td>
-				</tr>
-				<tr>
-					<td id="filePath"> <input name="filename" type="file"> </td>
-				</tr>
-			</tbody>
-			<tfoot>
-				<tr>
-					<td>
-						<button type="submit" onclick="mainSubmit()">등록</button>
-						<button type="button" onclick="history.back();">취소</button>
-					</td>
-				</tr>
-			</tfoot>
-        </table>
-		</form>
-		<br>
-		<div class="div-btn">
-		</div>
+    	<form action="<%=request.getContextPath()%>/member/mypagePasswordAction.do" method="post">
+    		<table class="myPassword">
+    			<thead>
+	    			<tr>
+	    				<th colspan="2">비밀번호 확인</th>
+	    			</tr>
+    			</thead>
+    			<tbody>
+	    			<tr>
+	    				<td>password: <input type="password" name="password" required></td>
+	    				<td><button class="pSubBtn" type="submit">확인<button></td>
+	    			</tr>
+    			</tbody>
+    		</table>
+    	</form>
     </section>
     <!-- Contact -->
     <footer>
