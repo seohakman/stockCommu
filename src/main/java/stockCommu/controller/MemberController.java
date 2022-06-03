@@ -12,11 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
+import stockCommu.domain.GraphVO;
 import stockCommu.domain.MemberVO;
 import stockCommu.domain.MyPageVO;
 import stockCommu.domain.PageMaker;
+import stockCommu.domain.ReportVO;
 import stockCommu.domain.SearchCriteria;
+import stockCommu.service.CommonDAO;
 import stockCommu.service.MemberDAO;
 
 
@@ -48,7 +50,7 @@ public class MemberController extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("/member/findID.jsp");
 			rd.forward(request, response);
 		}else if(command.equals("/member/findPWD.do")) {
-			//아이디찾기 페이지 이동
+			//비밀번호찾기 페이지 이동
 			RequestDispatcher rd = request.getRequestDispatcher("/member/findPWD.jsp");
 			rd.forward(request, response);
 		}else if(command.equals("/member/memberJoinAction.do")) {
@@ -321,6 +323,7 @@ public class MemberController extends HttpServlet {
 			}
 			
 		}else if(command.equals("/member/mypageChangePasswordAction.do")) {
+			// 비밀번호 변경 액션
 			HttpSession session = request.getSession();
 			String password = request.getParameter("password");
 			int midx = (int) session.getAttribute("midx");
@@ -336,6 +339,60 @@ public class MemberController extends HttpServlet {
 				out.println("<script> alert('변경되었습니다. 다시 로그인 하세요'); location.href='"+request.getContextPath()+"/member/memberLogin.do' </script>");
 			}else {
 				out.println("<script> alert('실패했습니다.'); history.back(); </script>");
+			}
+		}else if(command.equals("/member/reportControl.do")){
+			// 신고관리페이지로 이동
+			CommonDAO cd = new CommonDAO();
+			int cnt = cd.selectCount();
+			SearchCriteria scri = new SearchCriteria();
+			
+			PageMaker pm = new PageMaker();
+			pm.setScri(scri);
+			pm.setTotalCount(cnt);
+			
+			ArrayList<ReportVO> alist = cd.selectAllReport(scri);
+			request.setAttribute("alist", alist);
+			request.setAttribute("pm", pm);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/member/reportBoard.jsp");
+			rd.forward(request, response);
+		}else if(command.equals("/member/deleteReport.do")) {
+			// 처리한 신고 건을 삭제한다.
+			int ridx = Integer.parseInt(request.getParameter("ridx"));
+			CommonDAO cd = new CommonDAO();
+			int value = cd.deleteReport(ridx);
+			PrintWriter out = response.getWriter();
+			if(value==1) {
+				out.println("<script>alert('처리완료 했습니다.'); location.href='"+request.getContextPath()+"/member/reportControl.do'</script>");
+			}else {
+				out.println("<script>alert('실패했습니다.'); history.back()</script>");
+			}
+		}else if(command.equals("/member/mygraph.do")) {
+			/*
+			 * String date = request.getParameter("date"); String year =
+			 * date.substring(0,4); String month = date.substring(5,7); String day =
+			 * date.substring(8,10);
+			 */			
+			HttpSession session = request.getSession();
+			int midx = (int) session.getAttribute("midx");
+			MemberDAO md = new MemberDAO();
+			ArrayList<GraphVO> alist = md.selectGraph(midx);
+			request.setAttribute("alist", alist);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/member/FinancialGraph.jsp");
+			rd.forward(request, response);
+		}else if(command.equals("/member/myGraphAdd.do")) {
+			// 그래프(자산) 값 입력
+			HttpSession session = request.getSession();
+			int midx = (int) session.getAttribute("midx");
+			String inputDate = request.getParameter("inputDate");
+			String money = request.getParameter("money");
+			
+			MemberDAO md = new MemberDAO();
+			int value = md.insertGraph(midx, inputDate, money);
+			System.out.println(value);
+			if(value==1) {
+				response.sendRedirect(pj+"/member/mygraph.do");
 			}
 		}
 	}

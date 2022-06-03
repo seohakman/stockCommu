@@ -213,6 +213,7 @@ public class NotifyDAO {
 			while(rs.next()) {
 				nrv = new NotifyReplyVO();
 				nrv.setBidx(rs.getInt("bidx"));
+				nrv.setRidx(rs.getInt("ridx"));
 				nrv.setContent(rs.getString("content"));
 				nrv.setWriter(rs.getString("writer"));
 				nrv.setWriteday(rs.getString("writeday"));
@@ -332,6 +333,21 @@ public class NotifyDAO {
 		return nlist;
 	}
 	
+	public int replyDelete(int ridx) {
+		//댓글을 삭제하는 메서드
+		int value = 0;
+		String sql = "delete from notifyreply where ridx = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, ridx);
+			value = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return value;
+	}
 	
 	
 	

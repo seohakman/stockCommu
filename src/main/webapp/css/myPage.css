@@ -6,6 +6,9 @@
 	padding-bottom: 5px;
 }
 #mpDiv a {
+	border: 2px solid var(--color-white);
+	border-radius: 5px;
+	padding: 2px;
 	margin: 10px;
 }
 /* MyPage Main Content */

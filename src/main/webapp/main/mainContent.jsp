@@ -100,7 +100,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 		<div class="div-btn">
 			<button id="good" onclick="location.href='<%=request.getContextPath()%>/main/mainContentLike.do?name=good&bidx=<%=mv.getBidx()%>'">추천</button>
 			<button id="bad" onclick="location.href='<%=request.getContextPath()%>/main/mainContentLike.do?name=bad&bidx=<%=mv.getBidx()%>'">비추천</button>
-			<button id="report">신고</button>
+			<button id="report" onclick="location.href=
+			'<%=request.getContextPath()%>/common/reportWrite.do?bidx=<%=mv.getBidx()%>&board=<%=request.getServletPath().substring(1,request.getServletPath().indexOf("/",1))%>'">
+			신고</button>
 <%if(session.getAttribute("midx").equals(mv.getMidx())){ %>
 			<button id="modify" onclick="location.href='<%=request.getContextPath()%>/main/mainContentModify.do?bidx=<%=mv.getBidx()%>'">수정</button>
 			<button onclick="if(!confirm('삭제하시겠습니까?')){return false};
@@ -111,13 +113,19 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 		<!-- 댓글창 -->
 		<table id="replyTable">
 			<thead>
-				<th colspan="3">댓글</th>
+				<th colspan="4">댓글</th>
 			</thead>
 			<tbody>
 <%for(MainReplyVO mrv: mlist){ %>
 				<tr>
 					<td><%=mrv.getContent() %></td>
 					<td><%= mrv.getWriter() %></td>
+					<td id="replyDelete">
+<%	if(session.getAttribute("id").equals(mrv.getWriter())){ %>
+						<button onclick="if(!confirm('삭제하시겠습니까?')){return false}; 
+						location.href='<%=request.getContextPath()%>/main/replyDelete.do?bidx=<%=mrv.getBidx()%>&ridx=<%=mrv.getRidx()%>'">삭제</button>
+<%} %>
+					</td>
 					<td><%= mrv.getWriteday() %></td>
 				</tr>
 <%} %>
@@ -128,7 +136,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 			<tfoot>
 			<form name=fm>
 				<tr>
-					<td colspan="2">
+					<td colspan="3">
 						<textarea name="mainReply" id="txtarea"></textarea>
 					</td>
 					<td id="submitTd">

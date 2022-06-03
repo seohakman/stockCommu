@@ -38,6 +38,9 @@ public class FrontController extends HttpServlet {
 			 }else if(location.equals("notify")) {
 				 NotifyController nc = new NotifyController();
 				 nc.doPost(request, response);
+			 }else if(location.equals("common")) {
+				 CommonController cc = new CommonController();
+				 cc.doPost(request, response);
 			 }
 			 
 	}

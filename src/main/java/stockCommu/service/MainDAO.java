@@ -214,6 +214,7 @@ public class MainDAO {
 			while(rs.next()) {
 				mrv = new MainReplyVO();
 				mrv.setBidx(rs.getInt("bidx"));
+				mrv.setRidx(rs.getInt("ridx"));
 				mrv.setContent(rs.getString("content"));
 				mrv.setWriter(rs.getString("writer"));
 				mrv.setWriteday(rs.getString("writeday"));
@@ -278,6 +279,22 @@ public class MainDAO {
 			e.printStackTrace();
 		}
 		
+		return value;
+	}
+	
+	public int replyDelete(int ridx) {
+		//댓글을 삭제하는 메서드
+		int value = 0;
+		String sql = "delete from mainreply where ridx = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, ridx);
+			value = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return value;
 	}
 	

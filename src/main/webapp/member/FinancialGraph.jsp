@@ -1,19 +1,17 @@
 <%@page import="java.util.ArrayList"%>
-<%@page import="stockCommu.domain.*"%>
+<%@page import="stockCommu.domain.GraphVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
-<%
-	ArrayList<MemberVO> alist = (ArrayList<MemberVO>) request.getAttribute("alist");
-	PageMaker pm = (PageMaker) request.getAttribute("pm");
+<%	
+	
+	ArrayList<GraphVO> alist = (ArrayList<GraphVO>) request.getAttribute("alist");
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="<%=request.getContextPath() %>/css/global.css" />
-<link rel="stylesheet" href="<%=request.getContextPath() %>/css/superMember.css" />
+<link rel="stylesheet" href="<%= request.getContextPath()%>/css/global.css" />
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap"
 			rel="stylesheet">
 <script src="https://kit.fontawesome.com/9eb162ac0d.js"
@@ -22,7 +20,9 @@
 rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 />
-<title>관리자 페이지</title>
+<!-- 구글 그래프 스크립트 -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<title>자산 추이</title>
 </head>
 <body>
 	<!-- Navbar -->
@@ -63,61 +63,90 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
         </div>
       </div>
     </nav>
-    <!-- supermember nav -->
-    <nav id="superDiv">
-    	<div>
-    		<a href='<%= request.getContextPath()%>/member/superMember.do'>관리자 권한</a>
-    		<a href='<%= request.getContextPath()%>/member/reportControl.do'>신고 관리</a>
-    	</div>
-    </nav>
     <!-- main content -->
     <section id="home">
-      	<table id="superTable">
-      		<thead>
-      			<tr>
-      				<th>아이디</th>
-      				<th>이름</th>
-      				<th colspan="2">관리자 권한</th>
-      				<th>정지</th>
-      			</tr>
-      		</thead>
-      		<tbody>
-<%for(MemberVO mv: alist){ %>
-      			<tr>
-      				<td><%=mv.getId() %></td>
-      				<td><%=mv.getName() %></td>
-      				<td><button onclick="location.href='<%=request.getContextPath() %>/member/superMemberAdd.do?midx=<%=mv.getMidx()%>'">부여</button></td>
-      				<td><button onclick="location.href='<%=request.getContextPath() %>/member/superMemberDelete.do?midx=<%=mv.getMidx()%>'">제거</button></td>
-      				<td>
-<%	if(mv.getDelyn().equals("N")){ %>
-      				<button onclick="location.href='<%=request.getContextPath() %>/member/memberDelete.do?midx=<%=mv.getMidx()%>'">회원 정지</button>
-      				</td>
-      			</tr>
-<%}} %>
-      		</tbody>
-      	</table>
-    	<form id="search" action="<%=request.getContextPath()%>/member/superMember.do" method="post">
-			<select name="searchType">
-				<option value="id">아이디</option>
-				<option value="name">이름</option>
-			</select>
-			<input type="text" name="keyword">
-			<input type="submit" value="검색">
-		</form>
-		<!-- page -->
-        <div class="page">
-<% 
-	if(pm.isPrev() == true){
-		out.println("<a href='"+request.getContextPath()+"/member/superMember.do?page="+(pm.getStartPage()-1)+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>◀</a>");		
-	}
-	for(int i = pm.getStartPage(); i <= pm.getEndPage(); i++){
-		out.println("<a href='"+request.getContextPath()+"/member/superMember.do?page="+i+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>"+i+"</a>");
-	}
-	if(pm.isNext() && pm.getEndPage() > 0){
-		out.println("<a href='"+request.getContextPath()+"/member/superMember.do?page="+(pm.getEndPage()+1)+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>▶</a>");		
-	}
-%>
-        </div>
+    	<div id="chart_div"></div>
+    	<!-- 구글 그래프 차트 -->
+    	<script type="text/javascript">
+    	
+    	google.charts.load('current', {packages: ['corechart', 'line']});
+    	google.charts.setOnLoadCallback(drawBasic);
+		
+    	var data;
+    	var chart;
+    	var options;
+	 	function drawBasic() { 
+
+			  data = new google.visualization.DataTable();
+			  data.addColumn('datetime', 'year');
+			  data.addColumn('number', 'Dogs');
+
+			  data.addRows([
+			    [new Date(2000, 8, 5), 0],
+			    [new Date(2000, 8, 6), 10],
+			    [new Date(2000, 8, 7), 23],
+			    [new Date(2000, 8, 8), 17],
+			    [new Date(2000, 8, 9), 18],
+			    [new Date(2000, 8, 20), 9],
+			  ]);
+
+			  options = {
+			    hAxis: {
+			      title: 'Time',
+			      format:'yy-MM',
+			      ticks: [new Date(2000,8,1), new Date(2002,08,20)]
+			    },
+			    vAxis: {
+			      title: 'Popularity'
+			    },
+			    explorer: { axis: 'horizontal' }
+			  };
+
+			  chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+			  chart.draw(data, options);
+			} 
+	 	
+	 	function addData(arr){
+	 		
+	 		const year = ['2020','2020','2021','2021'];
+	    	var month = ['08','09','03','05'];
+	    	var day = ['01','03','04','05'];
+	    	var value = [10,23,15,30];
+	    	var len = year.length;
+	    	var arr = new Array();
+			for(let i = 0; i<len; i++){
+			     /* arr[i] = ["new"+" Date("+year[i]+","+month[i]+","+day[i]+"),"+value[i]]; */
+			     arr = [new Date(year[i],month[i],day[i]),value[i]];
+			     data.addRow(arr);
+			 }
+			   /* arr = arr.toString(); */
+			   console.log(arr);
+			   console.log(year);
+	 		chart.draw(data, options);
+	 		alert('데이터추가 완료');
+	 	}
+	 	console.log(new Date(2022,06,07));
+    	</script>
+    	<form action="<%=request.getContextPath()%>/member/myGraphAdd.do" method="post">
+	    	<div> 
+	  			<input name="inputDate" type="date" value="날짜">
+	  			자산 : <input name="money" type="text">
+	    		<button type="button" onclick="addData()">데이터 추가</button>
+	    		<button type="submit" >확인</button>
+	    	</div>    	
+    	</form>
+    	<table>
+    		<thead></thead>
+    		<tbody>
+<%for(GraphVO gv : alist){ %>    		
+    			<tr>
+    				<td><%=gv.getYear() %></td>
+    				<td><%=gv.getMoney() %></td>
+    			</tr>
+<%} %>
+    		</tbody>
+    	</table>
         <div class="fixed_content">fixed</div>
     </section>
     <!-- Contact -->

@@ -21,6 +21,7 @@ import stockCommu.domain.SecondVO;
 import stockCommu.domain.NotifyVO;
 import stockCommu.domain.PageMaker;
 import stockCommu.domain.SearchCriteria;
+import stockCommu.service.MainDAO;
 import stockCommu.service.NotifyDAO;
 import stockCommu.service.SecondDAO;
 
@@ -117,7 +118,7 @@ public class SecondController extends HttpServlet {
 			SecondVO sv = null;
 			sv = sdo.secondSelectOne(bidx);
 			request.setAttribute("sv", sv);
-			System.out.println(sv.getFilename());
+			
 			// 해당 글의 댓글 가져오는 작업
 			ArrayList<SecondReplyVO> slist = sdo.replySecond(bidx);
 			request.setAttribute("slist", slist);
@@ -199,6 +200,17 @@ public class SecondController extends HttpServlet {
 				response.sendRedirect(pj+"/second/secondBoard.do");
 			}
 			
+		}else if(command.equals("/second/replyDelete.do")) {
+			int bidx = Integer.parseInt(request.getParameter("bidx"));
+			int ridx = Integer.parseInt(request.getParameter("ridx"));
+			SecondDAO sdo = new SecondDAO();
+			int value = sdo.replyDelete(ridx);
+			if(value == 1) {
+				response.sendRedirect(pj+"/second/secondContent.do?bidx="+bidx);
+			}else {
+				PrintWriter out = response.getWriter();
+				out.println("<script>alert('실패했습니다.'); history.back()</script>");
+			}
 		}
 	}
 

@@ -1,3 +1,16 @@
+/* supermember nav */
+#superDiv {
+	background-color: var(--color-light-green);
+	font-weight: var(--weight-semi-bold);
+	text-align: center;
+	padding-bottom: 5px;
+}
+#superDiv a {
+	border: 2px solid var(--color-white);
+	border-radius: 5px;
+	padding: 2px;
+	margin: 10px;
+}
 /* Main Content */
 #home {
 	margin: 30px;
@@ -31,6 +44,10 @@ table button {
 	padding: 5px 15px 5px 15px;
 	border: 3px solid var(--color-light-green);
   	border-radius: 5px;
+}
+
+#reportBoard a{
+	color: var(--color-dark-grey);
 }
 
 #search {

@@ -2,9 +2,8 @@
 <%@page import="stockCommu.domain.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
 <%
-	ArrayList<MemberVO> alist = (ArrayList<MemberVO>) request.getAttribute("alist");
+	ArrayList<ReportVO> alist = (ArrayList<ReportVO>) request.getAttribute("alist");
 	PageMaker pm = (PageMaker) request.getAttribute("pm");
 %>
 <!DOCTYPE html>
@@ -72,49 +71,39 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
     </nav>
     <!-- main content -->
     <section id="home">
-      	<table id="superTable">
-      		<thead>
-      			<tr>
-      				<th>아이디</th>
-      				<th>이름</th>
-      				<th colspan="2">관리자 권한</th>
-      				<th>정지</th>
-      			</tr>
-      		</thead>
-      		<tbody>
-<%for(MemberVO mv: alist){ %>
-      			<tr>
-      				<td><%=mv.getId() %></td>
-      				<td><%=mv.getName() %></td>
-      				<td><button onclick="location.href='<%=request.getContextPath() %>/member/superMemberAdd.do?midx=<%=mv.getMidx()%>'">부여</button></td>
-      				<td><button onclick="location.href='<%=request.getContextPath() %>/member/superMemberDelete.do?midx=<%=mv.getMidx()%>'">제거</button></td>
-      				<td>
-<%	if(mv.getDelyn().equals("N")){ %>
-      				<button onclick="location.href='<%=request.getContextPath() %>/member/memberDelete.do?midx=<%=mv.getMidx()%>'">회원 정지</button>
-      				</td>
-      			</tr>
-<%}} %>
-      		</tbody>
-      	</table>
-    	<form id="search" action="<%=request.getContextPath()%>/member/superMember.do" method="post">
-			<select name="searchType">
-				<option value="id">아이디</option>
-				<option value="name">이름</option>
-			</select>
-			<input type="text" name="keyword">
-			<input type="submit" value="검색">
-		</form>
+		<table id="reportBoard">
+			<thead>
+				<tr>
+					<th>게시판</th>
+					<th>사유</th>
+					<th>내용</th>
+					<th>신고자</th>
+					<th>처리완료</th>
+				</tr>
+			</thead>
+			<tbody>
+<%for(ReportVO rv: alist){ %>
+				<tr>
+					<td><a href="<%=request.getContextPath()%>/<%=rv.getBoard()%>/<%=rv.getBoard()%>Content.do?bidx=<%=rv.getBidx()%>"><%=rv.getBoard() %></a></td>
+					<td><%=rv.getReason() %></td>
+					<td><%=rv.getContent()  %></td>
+					<td><%=rv.getMidx() %></td>
+					<td><button onclick="location.href='<%=request.getContextPath()%>/member/deleteReport.do?ridx=<%=rv.getRidx()%>'">처리완료</button></td>
+				</tr>
+<%} %>
+			</tbody>
+		</table>
 		<!-- page -->
         <div class="page">
 <% 
 	if(pm.isPrev() == true){
-		out.println("<a href='"+request.getContextPath()+"/member/superMember.do?page="+(pm.getStartPage()-1)+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>◀</a>");		
+		out.println("<a href='"+request.getContextPath()+"/member/reportControl.do?page="+(pm.getStartPage()-1)+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>◀</a>");		
 	}
 	for(int i = pm.getStartPage(); i <= pm.getEndPage(); i++){
-		out.println("<a href='"+request.getContextPath()+"/member/superMember.do?page="+i+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>"+i+"</a>");
+		out.println("<a href='"+request.getContextPath()+"/member/reportControl.do?page="+i+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>"+i+"</a>");
 	}
 	if(pm.isNext() && pm.getEndPage() > 0){
-		out.println("<a href='"+request.getContextPath()+"/member/superMember.do?page="+(pm.getEndPage()+1)+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>▶</a>");		
+		out.println("<a href='"+request.getContextPath()+"/member/reportControl.do?page="+(pm.getEndPage()+1)+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>▶</a>");		
 	}
 %>
         </div>

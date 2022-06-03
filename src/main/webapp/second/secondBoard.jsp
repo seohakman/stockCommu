@@ -84,25 +84,25 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 	<!-- 공지사항 글 -->
 	<!-- 로그인 했을 경우에만 게시물 클릭 이동이 가능하게 한다. -->
              	<tr class="b">
-	                <td><%=nv.getBidx() %></td>
-	                <td>
+	                <th>공지</th>
+	                <th>
 	                	<a href="<%=request.getContextPath()%>/notify/notifyContent.do?bidx=<%=nv.getBidx()%>"><%=nv.getSubject()%></a>
-	                </td>
-	                <td><%=nv.getWriter() %></td>
-	                <td><%=nv.getViewCount() %></td>
-	                <td><%=nv.getLikeCount() %></td>
-	                <td><%=nv.getWriteday() %></td>
+	                </th>
+	                <th><%=nv.getWriter() %></th>
+	                <th><%=nv.getViewCount() %></th>
+	                <th><%=nv.getLikeCount() %></th>
+	                <th><%=nv.getWriteday() %></th>
              	</tr>
 			</tbody>
 <%}else{%>
 			<tbody>
              	<tr class="b">
-	                <td><%=nv.getBidx() %></td>
-	                <td><%=nv.getSubject()%></td>
-	                <td><%=nv.getWriter() %></td>
-	                <td><%=nv.getViewCount() %></td>
-	                <td><%=nv.getLikeCount() %></td>
-	                <td><%=nv.getWriteday() %></td>
+	                <th>공지</th>
+	                <th><%=nv.getSubject()%></th>
+	                <th><%=nv.getWriter() %></th>
+	                <th><%=nv.getViewCount() %></th>
+	                <th><%=nv.getLikeCount() %></th>
+	                <th><%=nv.getWriteday() %></th>
              	</tr>
 <%}} %>
 <% for(SecondVO sv: alist){ 

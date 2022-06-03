@@ -47,6 +47,10 @@ section button {
   padding: 5px;
 }
 
+#replyDelete{
+	width: 60px;
+}
+
 #submitTd {
   width: 120px;
 }

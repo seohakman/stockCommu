@@ -204,6 +204,18 @@ public class MainController extends HttpServlet {
 			if(value==1) {
 				response.sendRedirect(pj+"/main/index.do");
 			}
+		}else if(command.equals("/main/replyDelete.do")) {
+			//게시글의 댓글을 삭제한다.
+			int bidx = Integer.parseInt(request.getParameter("bidx"));
+			int ridx = Integer.parseInt(request.getParameter("ridx"));
+			MainDAO md = new MainDAO();
+			int value = md.replyDelete(ridx);
+			if(value == 1) {
+				response.sendRedirect(pj+"/main/mainContent.do?bidx="+bidx);
+			}else {
+				PrintWriter out = response.getWriter();
+				out.println("<script>alert('실패했습니다.'); history.back()</script>");
+			}
 			
 		}
 	}

@@ -9,6 +9,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 
 import stockCommu.dbconn.Dbconn;
+import stockCommu.domain.GraphVO;
 import stockCommu.domain.MemberVO;
 import stockCommu.domain.MyPageVO;
 import stockCommu.domain.SearchCriteria;
@@ -448,8 +449,53 @@ public class MemberDAO {
 		return value;
 	}
 	
+	public int insertGraph(int midx, String inputDate, String money) {
+		//그래프로 출력할 자산추이를 입력한다.
+		int value = 0;
+		String sql = "insert into mygraph(midx, inputdate, money) values(?,?,?)";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, midx);
+			pstmt.setString(2,inputDate);
+			pstmt.setString(3, money);
+			value = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return value;
+	}
 	
-	
+	public ArrayList<GraphVO> selectGraph(int midx) {
+		// 그래프 그리기 위해 불러오는 메서드
+		// ArrayList로 받아와야하고 GraphVO 좀더 세분화해서 받아와야함
+		ArrayList<GraphVO> alist = new ArrayList<GraphVO>();
+		GraphVO gv = null;
+		ResultSet rs = null;
+		String sql = "select * from mygraph where midx = ? order by inputdate desc";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, midx);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				gv = new GraphVO();
+				String date = rs.getString("inputdate");
+				gv.setMidx(rs.getInt("midx"));
+				gv.setYear(date.substring(0,4));
+				gv.setMonth(date.substring(5,7));
+				gv.setDay(date.substring(8,10));
+				gv.setMoney(rs.getString("money"));
+				alist.add(gv);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return alist;
+	}
 	
 	
 	

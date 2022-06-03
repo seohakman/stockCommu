@@ -98,7 +98,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 		<div class="div-btn">
 			<button id="good" onclick="location.href='<%=request.getContextPath()%>/second/secondContentLike.do?name=good&bidx=<%=sv.getBidx()%>'">추천</button>
 			<button id="bad" onclick="location.href='<%=request.getContextPath()%>/second/secondContentLike.do?name=bad&bidx=<%=sv.getBidx()%>'">비추천</button>
-			<button id="report">신고</button>
+			<button id="report" onclick="location.href=
+			'<%=request.getContextPath()%>/common/reportWrite.do?bidx=<%=sv.getBidx()%>&board=<%=request.getServletPath().substring(1,request.getServletPath().indexOf("/",1))%>'">
+			신고</button>
 <%if(session.getAttribute("midx").equals(sv.getMidx())){ %>
 			<button id="modify" onclick="location.href='<%=request.getContextPath()%>/second/secondContentModify.do?bidx=<%=sv.getBidx()%>'">수정</button>
 			<button onclick="if(!confirm('삭제하시겠습니까?')){return false};
@@ -109,13 +111,19 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 		<!-- 댓글창 -->
 		<table id="replyTable">
 			<thead>
-				<th colspan="3">댓글</th>
+				<th colspan="4">댓글</th>
 			</thead>
 			<tbody>
 <%for(SecondReplyVO srv: slist){ %>
 				<tr>
 					<td><%=srv.getContent() %></td>
 					<td><%=srv.getWriter() %></td>
+					<td id="replyDelete">
+<%	if(session.getAttribute("id").equals(srv.getWriter())){ %>
+						<button onclick="if(!confirm('삭제하시겠습니까?')){return false}; 
+						location.href='<%=request.getContextPath()%>/second/replyDelete.do?bidx=<%=srv.getBidx()%>&ridx=<%=srv.getRidx()%>'">삭제</button>
+<%} %>
+					</td>
 					<td><%=srv.getWriteday() %></td>
 				</tr>
 <%} %>
@@ -126,7 +134,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 			<tfoot>
 			<form name=fm>
 				<tr>
-					<td colspan="2">
+					<td colspan="3">
 						<textarea name="secondReply" id="txtarea"></textarea>
 					</td>
 					<td id="submitTd">

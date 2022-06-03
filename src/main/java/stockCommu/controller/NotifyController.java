@@ -21,6 +21,7 @@ import stockCommu.domain.NotifyVO;
 import stockCommu.domain.PageMaker;
 import stockCommu.domain.SearchCriteria;
 import stockCommu.service.NotifyDAO;
+import stockCommu.service.SecondDAO;
 
 
 @WebServlet("/NotifyController")
@@ -173,7 +174,6 @@ public class NotifyController extends HttpServlet {
 			String content = request.getParameter("notifyReply");
 			String writer = request.getParameter("writer");
 			int bidx = Integer.parseInt(request.getParameter("bidx"));
-			System.out.println(bidx);
 			
 			NotifyDAO ndo = new NotifyDAO();
 			int value = ndo.insertReply(content, writer, bidx);
@@ -210,8 +210,18 @@ public class NotifyController extends HttpServlet {
 			}else {
 				out.println("<script>alert('실패했습니다.');"
 						+ "history.back();</script>");	
+			}	
+		}else if(command.equals("/notify/replyDelete.do")) {
+			int bidx = Integer.parseInt(request.getParameter("bidx"));
+			int ridx = Integer.parseInt(request.getParameter("ridx"));
+			NotifyDAO ndo = new NotifyDAO();
+			int value = ndo.replyDelete(ridx);
+			if(value == 1) {
+				response.sendRedirect(pj+"/notify/notifyContent.do?bidx="+bidx);
+			}else {
+				PrintWriter out = response.getWriter();
+				out.println("<script>alert('실패했습니다.'); history.back()</script>");
 			}
-			
 		}
 	}
 

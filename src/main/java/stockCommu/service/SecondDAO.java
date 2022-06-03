@@ -217,6 +217,7 @@ public class SecondDAO {
 			while(rs.next()) {
 				srv = new SecondReplyVO();
 				srv.setBidx(rs.getInt("bidx"));
+				srv.setRidx(rs.getInt("ridx"));
 				srv.setContent(rs.getString("content"));
 				srv.setWriter(rs.getString("writer"));
 				srv.setWriteday(rs.getString("writeday"));
@@ -283,6 +284,21 @@ public class SecondDAO {
 			e.printStackTrace();
 		}
 		
+		return value;
+	}
+	public int replyDelete(int ridx) {
+		//댓글을 삭제하는 메서드
+		int value = 0;
+		String sql = "delete from secondreply where ridx = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, ridx);
+			value = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return value;
 	}
 }
