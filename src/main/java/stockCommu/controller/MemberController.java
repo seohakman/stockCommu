@@ -68,13 +68,10 @@ public class MemberController extends HttpServlet {
 			}else {
 			    int value = md.insertMember(ID, PWD, name, email);
 			   
-			    //PrintWriter out = response.getWriter();
 			    if(value==1){
 			    	response.sendRedirect(pj+"/main/index.do");
-				//   out.println("<script>alert('회원가입 성공');location.href='"+request.getContextPath()+"/index.jsp'</script>");
 			    }else{
 				   response.sendRedirect(pj+"/member/memberJoin.do");
-				//  out.println("<script>alert('회원가입 실패');location.href='./inputOk.jsp'</script>");
 			    } 
 			}
 		}else if(command.equals("/member/idCheckAction.do")) {
