@@ -16,7 +16,9 @@
 	color: var(--color-dark-grey);
   	text-align: center;
   	padding: 30px 15px 15px 15px;
+  	border-bottom: 3px solid var(--color-light-green);
 }
+
 
 table {
 /* 	color: var(--color-dark-grey);
@@ -70,8 +72,32 @@ input{
 	border-radius: 5px;
 }
 
+/* FinancialGraph Main Content */
+#inputProperty {
+	text-align: center;
+	align-items: center;
+}
+#inputProperty button{
+	border: 2px solid var(--color-light-green);
+	border-radius: 5px;
+}
+#deleteProperty{
+	border: 2px solid var(--color-light-green);
+	border-radius: 5px;
+}
 
-
+.page {
+	
+	width: 900px;
+	margin: auto;
+	padding-top:10px;
+    text-align: center;
+}
+.page a{
+	color: var(--color-dark-grey);
+	font-size: var(--font-small);
+	font-weight: var(--weight-semi-bold);
+}
 @media screen and (max-width:900px) {
 	table {
 		width: 90%;

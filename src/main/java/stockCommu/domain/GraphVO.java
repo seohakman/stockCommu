@@ -7,7 +7,15 @@ public class GraphVO {
 	private String month;
 	private String day;
 	private String money;
+	private String inputDate;
 	
+	
+	public String getInputDate() {
+		return inputDate;
+	}
+	public void setInputDate(String inputDate) {
+		this.inputDate = inputDate;
+	}
 	public int getMidx() {
 		return midx;
 	}

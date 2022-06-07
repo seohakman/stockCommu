@@ -66,7 +66,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
     	<div>
     		<a href='<%= request.getContextPath()%>/member/mypage.do'>포트폴리오</a>
     		<a href='<%= request.getContextPath()%>/member/mygraph.do'>자산추이</a>
-    		<a href='<%= request.getContextPath()%>/member/myscrap.do'>스크랩</a>
     		<a href='<%= request.getContextPath()%>/member/mypagePassword.do'>비밀번호 변경</a>
     	</div>
     </nav>

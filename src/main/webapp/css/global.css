@@ -140,6 +140,7 @@ p {
 
 .show {
   display: block;
+  z-index: 5;
 }
 
 /* contact */

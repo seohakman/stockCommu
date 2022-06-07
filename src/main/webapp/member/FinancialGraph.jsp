@@ -1,9 +1,10 @@
+<%@page import="stockCommu.domain.PageMaker"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="stockCommu.domain.GraphVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%	
-	
+	PageMaker pm = (PageMaker) request.getAttribute("pm");
 	ArrayList<GraphVO> alist = (ArrayList<GraphVO>) request.getAttribute("alist");
 %>
 <!DOCTYPE html>
@@ -12,6 +13,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="<%= request.getContextPath()%>/css/global.css" />
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/myPage.css" />
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap"
 			rel="stylesheet">
 <script src="https://kit.fontawesome.com/9eb162ac0d.js"
@@ -48,7 +50,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
         	<!-- 로그인 했을 경우 로그아웃 버튼을 보여주고 아닌경우 회원가입 버튼을 보여줌 -->
 <%if(session.getAttribute("midx") != null){ %>
 		  <a href='<%= request.getContextPath()%>/member/memberLogoutAction.do'>로그아웃</a>
-		  <a href='<%= request.getContextPath()%>/member/mypage.do'>마이페이지</a>
 		  <!-- 관리자일 경우 관리페이지 보여줌 -->
 <%	if(session.getAttribute("superMember").equals("Y")){ %>
 		  <a href='<%= request.getContextPath()%>/member/superMember.do'>관리페이지</a>
@@ -63,90 +64,60 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
         </div>
       </div>
     </nav>
+    <!-- mypage nav -->
+    <nav id="mpDiv">
+    	<div>
+    		<a href='<%= request.getContextPath()%>/member/mypage.do'>포트폴리오</a>
+    		<a href='<%= request.getContextPath()%>/member/mygraph.do'>자산추이</a>
+    		<a href='<%= request.getContextPath()%>/member/mypagePassword.do'>비밀번호 변경</a>
+    	</div>
+    </nav>
     <!-- main content -->
     <section id="home">
-    	<div id="chart_div"></div>
-    	<!-- 구글 그래프 차트 -->
-    	<script type="text/javascript">
-    	
-    	google.charts.load('current', {packages: ['corechart', 'line']});
-    	google.charts.setOnLoadCallback(drawBasic);
-		
-    	var data;
-    	var chart;
-    	var options;
-	 	function drawBasic() { 
-
-			  data = new google.visualization.DataTable();
-			  data.addColumn('datetime', 'year');
-			  data.addColumn('number', 'Dogs');
-
-			  data.addRows([
-			    [new Date(2000, 8, 5), 0],
-			    [new Date(2000, 8, 6), 10],
-			    [new Date(2000, 8, 7), 23],
-			    [new Date(2000, 8, 8), 17],
-			    [new Date(2000, 8, 9), 18],
-			    [new Date(2000, 8, 20), 9],
-			  ]);
-
-			  options = {
-			    hAxis: {
-			      title: 'Time',
-			      format:'yy-MM',
-			      ticks: [new Date(2000,8,1), new Date(2002,08,20)]
-			    },
-			    vAxis: {
-			      title: 'Popularity'
-			    },
-			    explorer: { axis: 'horizontal' }
-			  };
-
-			  chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-
-			  chart.draw(data, options);
-			} 
-	 	
-	 	function addData(arr){
-	 		
-	 		const year = ['2020','2020','2021','2021'];
-	    	var month = ['08','09','03','05'];
-	    	var day = ['01','03','04','05'];
-	    	var value = [10,23,15,30];
-	    	var len = year.length;
-	    	var arr = new Array();
-			for(let i = 0; i<len; i++){
-			     /* arr[i] = ["new"+" Date("+year[i]+","+month[i]+","+day[i]+"),"+value[i]]; */
-			     arr = [new Date(year[i],month[i],day[i]),value[i]];
-			     data.addRow(arr);
-			 }
-			   /* arr = arr.toString(); */
-			   console.log(arr);
-			   console.log(year);
-	 		chart.draw(data, options);
-	 		alert('데이터추가 완료');
-	 	}
-	 	console.log(new Date(2022,06,07));
-    	</script>
+    	<h1 id="homeTitle"> 자 산 추 이 </h1>
+    	<div id="chart_div" style="width :100%;"></div>
     	<form action="<%=request.getContextPath()%>/member/myGraphAdd.do" method="post">
-	    	<div> 
-	  			<input name="inputDate" type="date" value="날짜">
-	  			자산 : <input name="money" type="text">
-	    		<button type="button" onclick="addData()">데이터 추가</button>
-	    		<button type="submit" >확인</button>
+	    	<div id = "inputProperty"> 
+	  			<input name="inputDate" type="date" value="날짜" required>
+	  			자산 : <input name="money" type="text" required>
+	    		<button type="submit" >추가</button>
 	    	</div>    	
     	</form>
     	<table>
-    		<thead></thead>
-    		<tbody>
-<%for(GraphVO gv : alist){ %>    		
+    		<thead>
     			<tr>
-    				<td><%=gv.getYear() %></td>
-    				<td><%=gv.getMoney() %></td>
+    				<th>날짜</th>
+    				<th>자산</th>
+    				<th></th>
     			</tr>
-<%} %>
+    		</thead>
+    		<tbody>
+<%for(GraphVO gv: alist){ %>
+				<tr>
+					<td><%=gv.getYear() %>-<%=gv.getMonth() %>-<%=gv.getDay() %></td>
+					<td><%=gv.getMoney() %>원</td>
+					<td>
+						<button id="deleteProperty" onclick="if(!confirm('삭제하시겠습니까?')){return false};
+						location.href='<%=request.getContextPath()%>/member/mygraphDeleteAction.do?inputdate=<%=gv.getInputDate()%>'">삭제</button>
+					</td>
+				</tr>
+<%} %>    		
     		</tbody>
     	</table>
+		<!-- page -->
+        <div class="page">
+<% 
+	if(pm.isPrev() == true){
+		out.println("<a href='"+request.getContextPath()+"/member/mygraph.do?page="+(pm.getStartPage()-1)+"'>◀</a>");		
+	}
+	for(int i = pm.getStartPage(); i <= pm.getEndPage(); i++){
+		out.println("<a href='"+request.getContextPath()+"/member/mygraph.do?page="+i+"'>"+i+"</a>");
+	}
+	if(pm.isNext() && pm.getEndPage() > 0){
+		out.println("<a href='"+request.getContextPath()+"/member/mygraph.do?page="+(pm.getEndPage()+1)+"'>▶</a>");		
+	}
+%>
+        </div>
         <div class="fixed_content">fixed</div>
     </section>
     <!-- Contact -->
@@ -159,5 +130,61 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
       </section>
     </footer>
 </body>
+<!-- 구글 그래프 차트 script -->
+<script type="text/javascript">	
+    	google.charts.load('current', {packages: ['corechart', 'line'], callback: drawBasic});	
+    	google.charts.setOnLoadCallback(addData);
+    	var data;
+    	var chart;
+    	var options;
+
+    	function drawBasic() { 
+
+			  data = new google.visualization.DataTable();
+			  data.addColumn('datetime', 'year');
+			  data.addColumn('number', 'Property');
+			  
+			  data.addRows([
+			  ]);
+			  options = {
+					  width:'100%'
+			  }
+			  
+			  chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+			  chart.draw(data, options);
+			}
+    	
+	 	
+	 	var year = [];
+    	var month = [];
+    	var day = [];
+    	var value = [];	 	
+<%for(GraphVO gv : alist){%>
+	    year.push(<%=gv.getYear()%>);
+	    month.push(<%=gv.getMonth()%>);
+	    day.push(<%=gv.getDay()%>);
+	    value.push(<%=gv.getMoney()%>);
+<% }%>
+        var len = year.length;
+	 	function addData(){
+	    	var arr = new Array();
+	    	for(let i = 0; i<len; i++){
+			     arr = [new Date(year[i],month[i],day[i]),value[i]];
+			     data.addRow(arr);
+			 }
+			options = {
+					pointSize: 5,
+					width:'100%',
+				    hAxis: {
+				      title: 'Time',
+				      format:'yy-MM',
+				      ticks: [new Date(year[0],month[0],day[0]),new Date(year[len-1],month[len-1],day[len-1])]
+				    },
+				    explorer: { axis: 'horizontal' }
+				  };
+	 		chart.draw(data, options);
+	 	}
+	 	
+</script>
 <script src="<%=request.getContextPath() %>/script/script.js"></script>
 </html>

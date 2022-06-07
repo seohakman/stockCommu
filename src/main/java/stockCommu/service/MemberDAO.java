@@ -466,22 +466,29 @@ public class MemberDAO {
 		return value;
 	}
 	
-	public ArrayList<GraphVO> selectGraph(int midx) {
+	public ArrayList<GraphVO> selectGraph(int midx, SearchCriteria scri) {
 		// 그래프 그리기 위해 불러오는 메서드
 		// ArrayList로 받아와야하고 GraphVO 좀더 세분화해서 받아와야함
 		ArrayList<GraphVO> alist = new ArrayList<GraphVO>();
 		GraphVO gv = null;
 		ResultSet rs = null;
-		String sql = "select * from mygraph where midx = ? order by inputdate desc";
+		String sql = "SELECT * FROM("  
+				+	"SELECT tb.*, ROWNUM rNum FROM("
+				+	"SELECT * FROM mygraph WHERE midx = ? ORDER BY INPUTDATE DESC"
+				+	") tb) WHERE rNum BETWEEN ? AND ?";
+
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, midx);
+			pstmt.setInt(2, (scri.getPage()-1)*10+1);
+			pstmt.setInt(3, (scri.getPage()*10));
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
 				gv = new GraphVO();
 				String date = rs.getString("inputdate");
+				gv.setInputDate(rs.getString("inputdate"));
 				gv.setMidx(rs.getInt("midx"));
 				gv.setYear(date.substring(0,4));
 				gv.setMonth(date.substring(5,7));
@@ -495,6 +502,41 @@ public class MemberDAO {
 		}
 		
 		return alist;
+	}
+	
+	public int totalProperty(int midx) {
+		int value = 0;
+		ResultSet rs = null;
+		String sql = "select count(*) cnt from mygraph where midx = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, midx);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				value = rs.getInt("cnt");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return value;
+	}
+	
+	public int deleteProperty(int midx, String inputdate) {
+		int value = 0;
+		String sql = "delete from mygraph where midx = ? and inputdate = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, midx);
+			pstmt.setString(2, inputdate);
+			value = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return value;
 	}
 	
 	

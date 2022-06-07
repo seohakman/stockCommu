@@ -365,6 +365,7 @@ public class MemberController extends HttpServlet {
 				out.println("<script>alert('실패했습니다.'); history.back()</script>");
 			}
 		}else if(command.equals("/member/mygraph.do")) {
+			// 자산추이 페이지
 			/*
 			 * String date = request.getParameter("date"); String year =
 			 * date.substring(0,4); String month = date.substring(5,7); String day =
@@ -373,9 +374,16 @@ public class MemberController extends HttpServlet {
 			HttpSession session = request.getSession();
 			int midx = (int) session.getAttribute("midx");
 			MemberDAO md = new MemberDAO();
-			ArrayList<GraphVO> alist = md.selectGraph(midx);
+			int cnt = md.totalProperty(midx);
+			SearchCriteria scri = new SearchCriteria();
+			PageMaker pm = new PageMaker();
+			pm.setScri(scri);
+			pm.setTotalCount(cnt);
+			System.out.println(cnt);
+			ArrayList<GraphVO> alist = md.selectGraph(midx,scri);
 			request.setAttribute("alist", alist);
-			
+			request.setAttribute("pm",pm);
+			System.out.println(alist);
 			RequestDispatcher rd = request.getRequestDispatcher("/member/FinancialGraph.jsp");
 			rd.forward(request, response);
 		}else if(command.equals("/member/myGraphAdd.do")) {
@@ -387,8 +395,17 @@ public class MemberController extends HttpServlet {
 			
 			MemberDAO md = new MemberDAO();
 			int value = md.insertGraph(midx, inputDate, money);
-			System.out.println(value);
 			if(value==1) {
+				response.sendRedirect(pj+"/member/mygraph.do");
+			}
+		}else if(command.equals("/member/mygraphDeleteAction.do")) {
+			// 추가한 자산을 삭제
+			HttpSession session = request.getSession();
+			int midx = (int) session.getAttribute("midx");
+			String inputdate = request.getParameter("inputdate");
+			MemberDAO md = new MemberDAO();
+			int value = md.deleteProperty(midx, inputdate);
+			if(value == 1) {
 				response.sendRedirect(pj+"/member/mygraph.do");
 			}
 		}

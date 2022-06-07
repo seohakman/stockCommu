@@ -97,13 +97,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
         <div class="page">
 <% 
 	if(pm.isPrev() == true){
-		out.println("<a href='"+request.getContextPath()+"/member/reportControl.do?page="+(pm.getStartPage()-1)+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>◀</a>");		
+		out.println("<a href='"+request.getContextPath()+"/member/reportControl.do?page="+(pm.getStartPage()-1)+"'>◀</a>");		
 	}
 	for(int i = pm.getStartPage(); i <= pm.getEndPage(); i++){
-		out.println("<a href='"+request.getContextPath()+"/member/reportControl.do?page="+i+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>"+i+"</a>");
+		out.println("<a href='"+request.getContextPath()+"/member/reportControl.do?page="+i+"'>"+i+"</a>");
 	}
 	if(pm.isNext() && pm.getEndPage() > 0){
-		out.println("<a href='"+request.getContextPath()+"/member/reportControl.do?page="+(pm.getEndPage()+1)+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>▶</a>");		
+		out.println("<a href='"+request.getContextPath()+"/member/reportControl.do?page="+(pm.getEndPage()+1)+"'>▶</a>");		
 	}
 %>
         </div>
