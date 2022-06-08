@@ -21,6 +21,7 @@ public class CommonDAO {
 	}
 	
 	public int reportBoard(int bidx, int midx, String board, String reason, String content ) {
+		// DB에 신고 내용을 넣는다.
 		int value=0;
 		String sql = "insert into reporttable(ridx,bidx,midx,board,reason,content) values(ridx_report.nextval,?,?,?,?,?) ";
 		try {
@@ -39,6 +40,7 @@ public class CommonDAO {
 	}
 	
 	public ArrayList<ReportVO> selectAllReport(SearchCriteria scri){
+		// DB에서 페이지에 맞는 신고 내용을 불러온다.
 		ArrayList<ReportVO> alist = new ArrayList<ReportVO>();
 		ReportVO rv = null;
 		ResultSet rs = null;
@@ -75,8 +77,7 @@ public class CommonDAO {
 	}
 	
 	public int selectCount() {
-		String str = ""; 
-		
+		// 신고 전체 건수
 		String sql= "select count(*) cnt from reporttable";
 		int value = 0;
 		ResultSet rs = null;
@@ -95,6 +96,7 @@ public class CommonDAO {
 	}
 	
 	public int deleteReport(int ridx) {
+		// 신고내용 삭제
 		int value = 0;
 		String sql = "delete from reporttable where ridx = ?";
 		

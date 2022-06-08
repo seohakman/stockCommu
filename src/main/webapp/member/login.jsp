@@ -46,8 +46,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
     <!-- main content -->
     <section id="home">
       <h1 id="homeTitle"> Login </h1>
-	  <table >
 	  <form name=fm>
+	  <table >
         <tr>
           <td>아이디 :</td>
           <td><input type="text" required name="ID"></td>
@@ -70,8 +70,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
             <button type="submit" id="login-btn" onclick="clickLogin()"><span>로그인</span></button>
           </td>
         </tr>
-      </form>  
       </table>
+      </form>  
     </section>
     <!-- Contact -->
     <footer>

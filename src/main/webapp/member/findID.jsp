@@ -46,8 +46,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
     <!-- main content -->
     <section id="home">
       <h1 id="homeTitle"> 아이디 찾기 </h1>
-	  <table >
 	  <form name=fm>
+	  <table >
         <tr>
           <td>이름 :</td>
           <td><input type="text" name="name" required></td>
@@ -61,8 +61,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
             <button type="submit" id="findID-btn" onclick="findIDbtn()"><span>아이디 찾기</span></button>
           </td>
         </tr>
-      </form>
       </table>
+      </form>
     </section>
     <!-- Contact -->
     <footer>

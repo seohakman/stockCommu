@@ -2,12 +2,12 @@ package stockCommu.domain;
 
 public class GraphVO {
 	
-	private int midx;
-	private String year;
+	private int midx;			// 그래프 그릴 회원번호
+	private String year;		
 	private String month;
 	private String day;
-	private String money;
-	private String inputDate;
+	private String money;		// 자산금액
+	private String inputDate;	// 등록일
 	
 	
 	public String getInputDate() {

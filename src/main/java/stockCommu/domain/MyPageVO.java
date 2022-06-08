@@ -6,7 +6,7 @@ public class MyPageVO {
 	private int midx;
 	private String name;
 	private String price;
-	private String estimate;
+	private String estimate;	// ÃßÁ¤Ä¡
 	private String eps;
 	private String per;
 	private String pbr;

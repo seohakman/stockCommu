@@ -96,7 +96,7 @@ public class SecondController extends HttpServlet {
 			
 			HttpSession session = request.getSession();
 			String subject = multi.getParameter("subject");
-			String content = multi.getParameter("content");
+			String content = multi.getParameter("content").replace("\r\n", "<br>");
 			String id = (String) session.getAttribute("id");
 			int midx = (int)session.getAttribute("midx");
 
@@ -166,7 +166,7 @@ public class SecondController extends HttpServlet {
 			
 			int bidx = Integer.parseInt(request.getParameter("bidx"));
 			String subject = multi.getParameter("subject");
-			String content = multi.getParameter("content");
+			String content = multi.getParameter("content").replace("\r\n", "<br>");
 			
 			SecondDAO sdo = new SecondDAO();
 			int value = sdo.secondModify(bidx, subject, content, fileName);
@@ -178,7 +178,7 @@ public class SecondController extends HttpServlet {
 			}
 		}else if(command.equals("/second/secondReplyAction.do")) {
 			//댓글을 DB에 저장하기위해 데이터를 받아오자
-			String content = request.getParameter("secondReply");
+			String content = request.getParameter("secondReply").replace("\r\n", "<br>");
 			String writer = request.getParameter("writer");
 			int bidx = Integer.parseInt(request.getParameter("bidx"));
 			

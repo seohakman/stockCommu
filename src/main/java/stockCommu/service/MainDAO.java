@@ -22,6 +22,7 @@ public class MainDAO {
 	}
 	
 	public int insertMain(String subject, String content, String ID, int midx, String fileName) {
+		// DB에 글을 넣는다.
 		int value = 0;
 		String sql = "insert into main(bidx,subject,content,midx,writer,viewcount,likecount,filename) values(bidx_main.nextval,?,?,?,?,?,?,?)";
 		
@@ -47,8 +48,6 @@ public class MainDAO {
 		ArrayList<MainVO> alist = new ArrayList();
 		MainVO mv = null;
 		ResultSet rs = null;
-		
-//		String sql = "select * from main where delyn = 'N'";
 		
 		String str = "";
 		if(scri.getSearchType().equals("subject")) {
@@ -129,6 +128,7 @@ public class MainDAO {
 	}
 	
 	public int mainLikeCount(int count, int bidx) {
+		// 추천/비추천을 적용한다.
 		int value = 0;
 		String sql = "update main set likecount= likecount + ? where bidx = ?";
 		
@@ -152,6 +152,7 @@ public class MainDAO {
 	}
 	
 	public int mainModify(int bidx, String subject, String content, String fileName) {
+		// 작성한 글을 수정하는 메서드
 		int value = 0;
 		String sql = "update main set subject= ?, content= ?, filename=? where bidx= ?";
 		try {
@@ -176,6 +177,7 @@ public class MainDAO {
 	}
 	
 	public int insertReply(String content, String writer, int bidx) {
+		// 댓글 작성 메서드
 		int value = 0;
 		String sql = "insert into mainreply(ridx,content,bidx,writer) values(ridx_main.nextval,?,?,?)";
 		

@@ -2,16 +2,16 @@ package stockCommu.domain;
 
 public class MainVO {
 	
-	private int bidx;
-	private String subject;
-	private String content;
-	private String writeday;
-	private String filename;
-	private int viewCount;
-	private int likeCount;
-	private String delyn;
-	private int midx;
-	private String writer;
+	private int bidx;			// 글 인덱스
+	private String subject;		// 제목
+	private String content;		// 내용
+	private String writeday;	// 작성일
+	private String filename;	// 업로드 파일 이름
+	private int viewCount;		// 조회수
+	private int likeCount;		// 좋아요
+	private String delyn;		// 삭제여부
+	private int midx;			// 회원인덱스
+	private String writer;		// 작성자 아이디
 	
 	public int getBidx() {
 		return bidx;

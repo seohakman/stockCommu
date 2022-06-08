@@ -2,12 +2,12 @@ package stockCommu.domain;
 
 public class ReportVO {
 	
-	private int ridx;
+	private int ridx;			// 신고 인덱스
 	private int midx;
-	private int bidx;
-	private String board;
-	private String reason;
-	private String content;
+	private int bidx;			// 글 인덱스
+	private String board;		// 어느 게시판인지 구분
+	private String reason;		// 신고 사유
+	private String content;		// 자세한 내용
 	
 	public int getRidx() {
 		return ridx;

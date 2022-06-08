@@ -26,21 +26,19 @@ public class MemberDAO {
 		this.conn = db.getConnection();
 	}
 	public int insertMember(String ID,String PWD,String name,String email){
+		// 회원가입 메서드
 		int value=0;		
-		//sql 구문을 사용하겠다
 	    String sql="insert into member(midx,ID,PWD,name,email,point)"
 	   	  		+ "values(midx.nextval,?,?,?,?,?)";
-		// Statement - 쿼리를 실행하기 위한 클래스, 쿼리를 실행하기 위한 클래스를 생성한다.
+		
 		try{
-		//	Statement stat = conn.createStatement();
-		//value = stat.executeUpdate(sql);
-		pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, ID);
-		pstmt.setString(2, PWD);
-		pstmt.setString(3, name);
-		pstmt.setString(4, email);
-		pstmt.setInt(5, 0);
-		value = pstmt.executeUpdate();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, ID);
+			pstmt.setString(2, PWD);
+			pstmt.setString(3, name);
+			pstmt.setString(4, email);
+			pstmt.setInt(5, 0);
+			value = pstmt.executeUpdate();
 			   
 		}catch(Exception e){
 			e.printStackTrace();
@@ -50,14 +48,13 @@ public class MemberDAO {
 	}
 	
 	public boolean checkedID(String ID) {
-		ResultSet rs = null;
 		//입력받은 ID와 같은 ID가 DB에 있는지 확인
+		ResultSet rs = null;
 		String sql = "select id from member where id = ?";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, ID);
 			rs = pstmt.executeQuery();
-			
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -253,7 +250,7 @@ public class MemberDAO {
 	}
 	
 	public int selectCount(SearchCriteria scri) {
-		//특정 조건에 맞는 게시글의 총개수를 구한다.
+		//특정 조건에 맞는 멤버의 숫자를 구한다.
 		String str = ""; // scri에 들어있는 searchType과 keyword의 값에 따라 다른 값을 준다.
 		if(scri.getSearchType().equals("id")) {
 			str = "id like '%"+scri.getKeyword()+"%'";
@@ -427,6 +424,7 @@ public class MemberDAO {
 	}
 	
 	public int modifyPassword(int midx, String password) {
+		// 비밀번호 변경 메서드
 		int value = 0 ;
 		String sql = "update member set pwd = ? where midx = ?";
 		
@@ -505,6 +503,7 @@ public class MemberDAO {
 	}
 	
 	public int totalProperty(int midx) {
+		// 회원별 자산입력 갯수
 		int value = 0;
 		ResultSet rs = null;
 		String sql = "select count(*) cnt from mygraph where midx = ?";

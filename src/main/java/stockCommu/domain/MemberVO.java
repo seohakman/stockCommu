@@ -2,15 +2,15 @@ package stockCommu.domain;
 
 public class MemberVO {
 	
-	private int midx;
+	private int midx;			// 회원 인덱스
 	private String id;
-	private String pwd;
+	private String pwd;			// 비밀번호
 	private String name;
 	private String email;
-	private String memberday;
-	private int point;
-	private String delyn;
-	private String supermember;
+	private String memberday;	// 가입일
+	private int point;			// 회원 점수
+	private String delyn;		// 삭제여부
+	private String supermember; // 관리자 회원
 	
 	
 	public String getSupermember() {

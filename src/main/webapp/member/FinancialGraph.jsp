@@ -169,7 +169,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 	 	function addData(){
 	    	var arr = new Array();
 	    	for(let i = 0; i<len; i++){
-			     arr = [new Date(year[i],month[i],day[i]),value[i]];
+			     arr = [new Date(year[i],month[i]-1,day[i]),value[i]];
 			     data.addRow(arr);
 			 }
 			options = {
@@ -178,7 +178,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 				    hAxis: {
 				      title: 'Time',
 				      format:'yy-MM',
-				      ticks: [new Date(year[0],month[0],day[0]),new Date(year[len-1],month[len-1],day[len-1])]
+				      ticks: [new Date(year[0],month[0]-1,day[0]),new Date(year[len-1],month[len-1]-1,day[len-1])]
 				    },
 				    explorer: { axis: 'horizontal' }
 				  };

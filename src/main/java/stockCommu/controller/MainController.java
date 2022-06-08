@@ -41,6 +41,7 @@ public class MainController extends HttpServlet {
 		String command = uri.substring(pj.length());
 		System.out.println("command : " + command );
 		
+		// 파일 업로드 경로
 		String uploadPath = "D:\\open API (A)\\Dev\\stockCommu\\src\\main\\webapp\\";
 		String saveFolder = "imgs";
 		String saveFullPath = uploadPath + saveFolder;
@@ -92,7 +93,7 @@ public class MainController extends HttpServlet {
 			
 			HttpSession session = request.getSession();
 			String subject = multi.getParameter("subject");
-			String content = multi.getParameter("content");
+			String content = multi.getParameter("content").replace("\r\n", "<br>");
 			String id = (String) session.getAttribute("id");
 			int midx = (int)session.getAttribute("midx");
 			
@@ -166,7 +167,7 @@ public class MainController extends HttpServlet {
 
 			int bidx = Integer.parseInt(request.getParameter("bidx"));
 			String subject = multi.getParameter("subject");
-			String content = multi.getParameter("content");
+			String content = multi.getParameter("content").replace("\r\n", "<br>");
 			
 			Enumeration files = multi.getFileNames();
 			String file = (String)files.nextElement();
@@ -183,7 +184,7 @@ public class MainController extends HttpServlet {
 			}
 		}else if(command.equals("/main/mainReplyAction.do")) {
 			//댓글을 DB에 저장하기위해 데이터를 받아오자
-			String content = request.getParameter("mainReply");
+			String content = request.getParameter("mainReply").replace("\r\n", "<br>");
 			String writer = request.getParameter("writer");
 			int bidx = Integer.parseInt(request.getParameter("bidx"));
 			

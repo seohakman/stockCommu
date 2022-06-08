@@ -89,7 +89,7 @@ public class NotifyController extends HttpServlet {
 			
 			HttpSession session = request.getSession();
 			String subject = multi.getParameter("subject");
-			String content = multi.getParameter("content");
+			String content = multi.getParameter("content").replace("\r\n", "<br>");
 			String id = (String) session.getAttribute("id");
 			int midx = (int)session.getAttribute("midx");
 
@@ -159,7 +159,7 @@ public class NotifyController extends HttpServlet {
 			
 			int bidx = Integer.parseInt(request.getParameter("bidx"));
 			String subject = multi.getParameter("subject");
-			String content = multi.getParameter("content");
+			String content = multi.getParameter("content").replace("\r\n", "<br>");
 			
 			NotifyDAO ndo = new NotifyDAO();
 			int value = ndo.notifyModify(bidx, subject, content, fileName);
@@ -171,7 +171,7 @@ public class NotifyController extends HttpServlet {
 			}
 		}else if(command.equals("/notify/notifyReplyAction.do")) {
 			//댓글을 DB에 저장하기위해 데이터를 받아오자
-			String content = request.getParameter("notifyReply");
+			String content = request.getParameter("notifyReply").replace("\r\n", "<br>");
 			String writer = request.getParameter("writer");
 			int bidx = Integer.parseInt(request.getParameter("bidx"));
 			

@@ -379,11 +379,11 @@ public class MemberController extends HttpServlet {
 			PageMaker pm = new PageMaker();
 			pm.setScri(scri);
 			pm.setTotalCount(cnt);
-			System.out.println(cnt);
+			
 			ArrayList<GraphVO> alist = md.selectGraph(midx,scri);
 			request.setAttribute("alist", alist);
 			request.setAttribute("pm",pm);
-			System.out.println(alist);
+			
 			RequestDispatcher rd = request.getRequestDispatcher("/member/FinancialGraph.jsp");
 			rd.forward(request, response);
 		}else if(command.equals("/member/myGraphAdd.do")) {

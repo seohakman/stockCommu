@@ -2,12 +2,12 @@ package stockCommu.domain;
 
 public class MainReplyVO {
 	
-	private int ridx;
-	private String content;
-	private String writeday;
-	private String delyn;
-	private int bidx;
-	private String writer;
+	private int ridx;			// 댓글 인덱스
+	private String content;		// 내용
+	private String writeday;	// 작성일
+	private String delyn;		// 삭제여부
+	private int bidx;			// 원글 인덱스
+	private String writer;		// 작성자
 	
 	public int getRidx() {
 		return ridx;
