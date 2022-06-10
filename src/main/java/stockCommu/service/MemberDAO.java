@@ -465,7 +465,7 @@ public class MemberDAO {
 	}
 	
 	public ArrayList<GraphVO> selectGraph(int midx, SearchCriteria scri) {
-		// 그래프 그리기 위해 불러오는 메서드
+		// 자산추이를 출력하기 위한 메서드
 		// ArrayList로 받아와야하고 GraphVO 좀더 세분화해서 받아와야함
 		ArrayList<GraphVO> alist = new ArrayList<GraphVO>();
 		GraphVO gv = null;
@@ -481,6 +481,7 @@ public class MemberDAO {
 			pstmt.setInt(1, midx);
 			pstmt.setInt(2, (scri.getPage()-1)*10+1);
 			pstmt.setInt(3, (scri.getPage()*10));
+			
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -500,6 +501,37 @@ public class MemberDAO {
 		}
 		
 		return alist;
+	}
+	
+	public ArrayList<GraphVO> drawGraph(int midx){
+		// 그래프를 그리기 위한 메서드
+		ArrayList<GraphVO> glist = new ArrayList<GraphVO>();
+		GraphVO gv = null;
+		ResultSet rs = null;
+		String sql = "select * from mygraph where midx = ? ORDER BY INPUTDATE DESC";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, midx);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				gv = new GraphVO();
+				String date = rs.getString("inputdate");
+				gv.setInputDate(rs.getString("inputdate"));
+				gv.setMidx(rs.getInt("midx"));
+				gv.setYear(date.substring(0,4));
+				gv.setMonth(date.substring(5,7));
+				gv.setDay(date.substring(8,10));
+				gv.setMoney(rs.getString("money"));
+				glist.add(gv);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return glist;
 	}
 	
 	public int totalProperty(int midx) {

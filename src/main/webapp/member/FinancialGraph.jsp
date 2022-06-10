@@ -6,6 +6,7 @@
 <%	
 	PageMaker pm = (PageMaker) request.getAttribute("pm");
 	ArrayList<GraphVO> alist = (ArrayList<GraphVO>) request.getAttribute("alist");
+	ArrayList<GraphVO> glist = (ArrayList<GraphVO>) request.getAttribute("glist");
 %>
 <!DOCTYPE html>
 <html>
@@ -159,7 +160,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
     	var month = [];
     	var day = [];
     	var value = [];	 	
-<%for(GraphVO gv : alist){%>
+<%for(GraphVO gv : glist){%>
 	    year.push(<%=gv.getYear()%>);
 	    month.push(<%=gv.getMonth()%>);
 	    day.push(<%=gv.getDay()%>);

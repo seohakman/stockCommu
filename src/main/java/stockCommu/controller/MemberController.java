@@ -373,15 +373,22 @@ public class MemberController extends HttpServlet {
 			 */			
 			HttpSession session = request.getSession();
 			int midx = (int) session.getAttribute("midx");
+			String page = request.getParameter("page");
+			if(page==null) {page = "1";}
+			
 			MemberDAO md = new MemberDAO();
 			int cnt = md.totalProperty(midx);
 			SearchCriteria scri = new SearchCriteria();
+			scri.setPage(Integer.parseInt(page));
+			
 			PageMaker pm = new PageMaker();
 			pm.setScri(scri);
 			pm.setTotalCount(cnt);
 			
 			ArrayList<GraphVO> alist = md.selectGraph(midx,scri);
+			ArrayList<GraphVO> glist = md.drawGraph(midx);
 			request.setAttribute("alist", alist);
+			request.setAttribute("glist", glist);
 			request.setAttribute("pm",pm);
 			
 			RequestDispatcher rd = request.getRequestDispatcher("/member/FinancialGraph.jsp");

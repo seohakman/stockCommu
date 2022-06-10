@@ -124,7 +124,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 						location.href='<%=request.getContextPath()%>/second/replyDelete.do?bidx=<%=srv.getBidx()%>&ridx=<%=srv.getRidx()%>'">삭제</button>
 <%} %>
 					</td>
-					<td><%=srv.getWriteday() %></td>
+					<td><%=srv.getWriteday().substring(0,16) %></td>
 				</tr>
 <%} %>
 				<tr>

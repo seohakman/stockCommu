@@ -91,7 +91,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 	                <th><%=nv.getWriter() %></th>
 	                <th><%=nv.getViewCount() %></th>
 	                <th><%=nv.getLikeCount() %></th>
-	                <th><%=nv.getWriteday() %></th>
+	                <th><%=nv.getWriteday().substring(0,16) %></th>
              	</tr>
 			</tbody>
 <%}else{%>
@@ -102,7 +102,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 	                <th><%=nv.getWriter() %></th>
 	                <th><%=nv.getViewCount() %></th>
 	                <th><%=nv.getLikeCount() %></th>
-	                <th><%=nv.getWriteday() %></th>
+	                <th><%=nv.getWriteday().substring(0,16) %></th>
              	</tr>
 <%}} %>
 <% for(SecondVO sv: alist){ 
@@ -116,7 +116,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 	                <td><%=sv.getWriter() %></td>
 	                <td><%=sv.getViewCount() %></td>
 	                <td><%=sv.getLikeCount() %></td>
-	                <td><%=sv.getWriteday() %></td>
+	                <td><%=sv.getWriteday().substring(0,16) %></td>
              	</tr>
 			</tbody>
 <%}else{%>
@@ -127,7 +127,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 	                <td><%=sv.getWriter() %></td>
 	                <td><%=sv.getViewCount() %></td>
 	                <td><%=sv.getLikeCount() %></td>
-	                <td><%=sv.getWriteday() %></td>
+	                <td><%=sv.getWriteday().substring(0,16) %></td>
              	</tr>
 			</tbody>
 <%}} %>

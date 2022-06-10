@@ -94,6 +94,10 @@ p {
   margin: 4px 0;
 }
 
+textarea {
+	resize: none;
+}
+
 /* Navbar */
 #navbar {
   display: flex;

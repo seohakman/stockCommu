@@ -89,7 +89,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 	                <td><%=nv.getWriter() %></td>
 	                <td><%=nv.getViewCount() %></td>
 	                <td><%=nv.getLikeCount() %></td>
-	                <td><%=nv.getWriteday() %></td>
+	                <td><%=nv.getWriteday().substring(0,16) %></td>
              	</tr>
 			</tbody>
 <%}else{%>
@@ -100,7 +100,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 	                <td><%=nv.getWriter() %></td>
 	                <td><%=nv.getViewCount() %></td>
 	                <td><%=nv.getLikeCount() %></td>
-	                <td><%=nv.getWriteday() %></td>
+	                <td><%=nv.getWriteday().substring(0,16) %></td>
              	</tr>
 			</tbody>
 <%}} %>
