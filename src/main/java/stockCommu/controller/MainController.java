@@ -88,7 +88,7 @@ public class MainController extends HttpServlet {
 			rd.forward(request, response);
 		}else if(command.equals("/main/mainWriteAction.do")) {
 			//작성한 글을 DB에 넣는다.
-			int sizeLimit = 1204*1024*15;
+			int sizeLimit = 1024*1024*15;
 			MultipartRequest multi = new MultipartRequest(request, saveFullPath, sizeLimit, "utf-8", new DefaultFileRenamePolicy());
 			
 			HttpSession session = request.getSession();
