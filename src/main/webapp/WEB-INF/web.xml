@@ -19,7 +19,10 @@
 <url-pattern>*.do</url-pattern>
 </servlet-mapping>
 
-
+<context-param>
+	<param-name>CHAT_ADDR</param-name>
+	<param-value>ws://localhost:8080/stockCommu</param-value>
+</context-param>
 
 
 

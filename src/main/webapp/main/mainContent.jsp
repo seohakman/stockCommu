@@ -10,12 +10,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="https://kit.fontawesome.com/f5807db9d4.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/boardContent.css" />
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/global.css" />
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap"
 			rel="stylesheet">
-<script src="https://kit.fontawesome.com/9eb162ac0d.js"
-	crossorigin="anonymous"></script>
 <link
 rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
@@ -149,6 +149,18 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
     </section>
     <!-- Contact -->
     <footer>
+<%if(session.getAttribute("midx") != null){ %>
+      <div>
+		<div id="chatDiv" style="display: none;">   			
+    		<iframe id="chatWindow"
+  				src="<%= request.getContextPath() %>/WebSocket/ChatWindow.jsp">
+			</iframe>
+		</div>
+		<button onclick="location.href='#chatDiv'" class="chat_toggle_btn" >
+   			<i id="chatIcon" class="fa-solid fa-comments fa-2x"></i>
+   		</button>
+      </div>
+<%} %>
       <section id="contact" class="section">
         <h1 class="contact__title"></h1>
         <p class="contact__rights">

@@ -7,4 +7,18 @@ navbarToggleBtn.addEventListener('click', () => {
 	document.getElementById("myDropdown").classList.toggle('show');
 });
 
+/* chatToggle */
 
+
+$(document).ready(function(){
+	$('.chat_toggle_btn').click(function(){
+		if($('#chatDiv').css('display')=='none'){
+                                
+			$('#chatDiv').css('display','block');
+		  }else{
+	      
+			$('#chatDiv').css('display','none');
+		  }
+	
+		});
+});

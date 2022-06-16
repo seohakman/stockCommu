@@ -146,6 +146,22 @@ textarea {
   display: block;
   z-index: 5;
 }
+/* chat */
+#chatIcon{
+	color: var(--color-white);
+	border-radius: 100%;
+	background-color: var(--color-light-green);
+	padding: 10px;
+}
+
+#chatWindow{
+	width: 300px;
+	height: 460px;
+	background-color: var(--color-white);
+	border-radius: 10px; 
+	border: 2px solid var(--color-light-green); 
+}
+
 
 /* contact */
 .fixed_content{
