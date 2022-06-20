@@ -24,7 +24,7 @@ public class MainDAO {
 	public int insertMain(String subject, String content, String ID, int midx, String fileName) {
 		// DB에 글을 넣는다.
 		int value = 0;
-		String sql = "insert into main(bidx,subject,content,midx,writer,viewcount,likecount,filename) values(bidx_main.nextval,?,?,?,?,?,?,?)";
+		String sql = "insert into main(subject,content,midx,writer,viewcount,likecount,filename) values(?,?,?,?,?,?,?)";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -56,16 +56,12 @@ public class MainDAO {
 			str = "and writer like '%"+scri.getKeyword()+"%'";
 		}
 		
-		String sql = "SELECT * FROM("
-					+"SELECT tb.*, ROWNUM rNum FROM("
-					+	"SELECT * FROM main ORDER BY bidx DESC"
-					+	") tb"
-					+")WHERE rNum BETWEEN ? AND ? and delyn = 'N'" + str;
+		String sql = "SELECT * FROM main WHERE delyn = 'N' "+ str +" ORDER BY bidx DESC LIMIT ?, ? ";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, (scri.getPage()-1)*10+1);
-			pstmt.setInt(2, (scri.getPage()*10));
+			pstmt.setInt(1, (scri.getPage()-1)*10);
+			pstmt.setInt(2, 10);
 			rs = pstmt.executeQuery();
 			
 			
@@ -179,7 +175,7 @@ public class MainDAO {
 	public int insertReply(String content, String writer, int bidx) {
 		// 댓글 작성 메서드
 		int value = 0;
-		String sql = "insert into mainreply(ridx,content,bidx,writer) values(ridx_main.nextval,?,?,?)";
+		String sql = "insert into mainreply(content,bidx,writer) values(?,?,?)";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);

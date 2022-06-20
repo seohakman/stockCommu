@@ -24,7 +24,7 @@ public class SecondDAO {
 	public int insertSecond(String subject, String content, String ID, int midx, String fileName) {
 		//자유게시판에 DB에 글 삽입
 		int value = 0;
-		String sql = "insert into second(bidx,subject,content,midx,writer,viewcount,likecount,filename) values(bidx_second.nextval,?,?,?,?,?,?,?)";
+		String sql = "insert into second(subject,content,midx,writer,viewcount,likecount,filename) values(?,?,?,?,?,?,?)";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -57,16 +57,12 @@ public class SecondDAO {
 			str = "and writer like '%"+scri.getKeyword()+"%'";
 		}
 		
-		String sql = "SELECT * FROM("
-					+"SELECT tb.*, ROWNUM rNum FROM("
-					+	"SELECT * FROM second ORDER BY bidx DESC"
-					+	") tb"
-					+")WHERE rNum BETWEEN ? AND ? and delyn = 'N'" + str;
+		String sql = "SELECT * FROM second WHERE delyn = 'N' "+ str +" ORDER BY bidx DESC LIMIT ?, ? ";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, (scri.getPage()-1)*10+1);
-			pstmt.setInt(2, (scri.getPage()*10));
+			pstmt.setInt(1, (scri.getPage()-1)*10);
+			pstmt.setInt(2, 10);
 			rs = pstmt.executeQuery();
 			
 			
@@ -180,7 +176,7 @@ public class SecondDAO {
 	public int insertReply(String content, String writer, int bidx) {
 		//댓글 작성 메서드
 		int value = 0;
-		String sql = "insert into secondreply(ridx,content,bidx,writer) values(ridx_second.nextval,?,?,?)";
+		String sql = "insert into secondreply(content,bidx,writer) values(?,?,?)";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);

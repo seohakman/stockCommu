@@ -147,6 +147,12 @@ textarea {
   z-index: 5;
 }
 /* chat */
+#footer_chat_div{
+	position:  fixed;
+	display: inline-block;
+	bottom: 70px;
+}
+
 #chatIcon{
 	color: var(--color-white);
 	border-radius: 100%;

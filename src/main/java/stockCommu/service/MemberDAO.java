@@ -28,8 +28,7 @@ public class MemberDAO {
 	public int insertMember(String ID,String PWD,String name,String email){
 		// 회원가입 메서드
 		int value=0;		
-	    String sql="insert into member(midx,ID,PWD,name,email,point)"
-	   	  		+ "values(midx.nextval,?,?,?,?,?)";
+	    String sql="insert into member(ID,PWD,name,email,point) values(?,?,?,?,?)";
 		
 		try{
 			pstmt = conn.prepareStatement(sql);
@@ -215,21 +214,17 @@ public class MemberDAO {
 
 		String str = "";
 		if(scri.getSearchType().equals("id")) {
-			str = "and id like '%"+scri.getKeyword()+"%'";
+			str = "id like '%"+scri.getKeyword()+"%'";
 		}else if(scri.getSearchType().equals("name")){
-			str = "and name like '%"+scri.getKeyword()+"%'";
+			str = "name like '%"+scri.getKeyword()+"%'";
 		}
 
-		String sql = "SELECT * FROM("
-					+"SELECT tb.*, ROWNUM rNum FROM("
-					+	"SELECT * FROM member ORDER BY midx deSC"
-					+	") tb"
-					+")WHERE rNum BETWEEN ? AND ? " + str;
+		String sql = "SELECT * FROM member WHERE "+ str +" ORDER BY midx DESC LIMIT ?, ? ";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, (scri.getPage()-1)*10+1);
-			pstmt.setInt(2, (scri.getPage()*10));
+			pstmt.setInt(1, (scri.getPage()-1)*10);
+			pstmt.setInt(2, 10);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -322,7 +317,7 @@ public class MemberDAO {
 	public int insertPofol(int midx, String name, String price, String estimate, String eps, String per, String pbr, String etc) {
 		//마이페이지 포폴에 새로운 객체를 등록한다.
 		int value = 0;
-		String sql = "insert into mypage(myidx, midx, name, price,estimate, eps, per, pbr, etc) values(myidx.nextval, ?,?,?,?,?,?,?,?)";
+		String sql = "insert into mypage(midx, name, price,estimate, eps, per, pbr, etc) values(?,?,?,?,?,?,?,?)";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -470,17 +465,13 @@ public class MemberDAO {
 		ArrayList<GraphVO> alist = new ArrayList<GraphVO>();
 		GraphVO gv = null;
 		ResultSet rs = null;
-		String sql = "SELECT * FROM("  
-				+	"SELECT tb.*, ROWNUM rNum FROM("
-				+	"SELECT * FROM mygraph WHERE midx = ? ORDER BY INPUTDATE DESC"
-				+	") tb) WHERE rNum BETWEEN ? AND ?";
-
+		String sql = "SELECT * FROM mygraph WHERE midx = ? ORDER BY INPUTDATE DESC LIMIT ?, ? ";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, midx);
-			pstmt.setInt(2, (scri.getPage()-1)*10+1);
-			pstmt.setInt(3, (scri.getPage()*10));
+			pstmt.setInt(2, (scri.getPage()-1)*10);
+			pstmt.setInt(3, 10);
 			
 			rs = pstmt.executeQuery();
 			

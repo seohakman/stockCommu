@@ -135,9 +135,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
         <div class="fixed_content">fixed</div>
     </section>
     <!-- Contact -->
-    <footer>
 <%if(session.getAttribute("midx") != null){ %>
-      <div>
+      <div id="footer_chat_div">
 		<div id="chatDiv" style="display: none;">   			
     		<iframe id="chatWindow"
   				src="<%= request.getContextPath() %>/WebSocket/ChatWindow.jsp">
@@ -148,6 +147,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
    		</button>
       </div>
 <%} %>
+    <footer>
       <section id="contact" class="section">
         <h1 class="contact__title"></h1>
         <p class="contact__rights">

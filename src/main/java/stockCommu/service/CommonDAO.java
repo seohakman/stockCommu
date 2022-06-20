@@ -23,7 +23,7 @@ public class CommonDAO {
 	public int reportBoard(int bidx, int midx, String board, String reason, String content ) {
 		// DB에 신고 내용을 넣는다.
 		int value=0;
-		String sql = "insert into reporttable(ridx,bidx,midx,board,reason,content) values(ridx_report.nextval,?,?,?,?,?) ";
+		String sql = "insert into reporttable(bidx,midx,board,reason,content) values(?,?,?,?,?) ";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, bidx);
@@ -45,16 +45,12 @@ public class CommonDAO {
 		ReportVO rv = null;
 		ResultSet rs = null;
 		
-		String sql = "SELECT * FROM("
-				+"SELECT tb.*, ROWNUM rNum FROM("
-				+	"SELECT * FROM reporttable ORDER BY ridx DESC"
-				+	") tb"
-				+")WHERE rNum BETWEEN ? AND ?";
+		String sql = "SELECT * FROM reporttable ORDER BY ridx DESC LIMIT ?, ? ";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, (scri.getPage()-1)*10+1);
-			pstmt.setInt(2, (scri.getPage()*10));
+			pstmt.setInt(1, (scri.getPage()-1)*10);
+			pstmt.setInt(2, 10);
 			rs= pstmt.executeQuery();
 			
 			while(rs.next()) {
