@@ -104,7 +104,9 @@ public class MemberController extends HttpServlet {
 				session.setAttribute("name", mv.getName());
 				session.setAttribute("point", mv.getPoint());
 				session.setAttribute("superMember", mv.getSupermember());
+				// session에 개인정보인 비밀번호 넣으면 안되는데
 				session.setAttribute("password", mv.getPwd());
+				session.setAttribute("mv", mv);
 				// 3.이동
 				if(session.getAttribute("saveUrl") != null) {
 					response.sendRedirect((String)session.getAttribute("saveUrl"));

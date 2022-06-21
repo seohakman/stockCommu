@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*"  %>
 <%@ page import="stockCommu.domain.*" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <% 
 	ArrayList<MainVO> alist = (ArrayList<MainVO>)request.getAttribute("alist");
 	ArrayList<NotifyVO> nlist = (ArrayList<NotifyVO>)request.getAttribute("nlist");
@@ -45,18 +47,18 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
           <i class="fas fa-bars fa-2x"></i>
         </button>
         <div class="navbar__toggle_content" id="myDropdown">
-        	<!-- 로그인 했을 경우 로그아웃 버튼을 보여주고 아닌경우 회원가입 버튼을 보여줌 -->
-<%if(session.getAttribute("midx") != null){ %>
+        <!-- 로그인 했을 경우 로그아웃 버튼을 보여주고 아닌경우 회원가입 버튼을 보여줌 -->
+		<c:if test="${not empty mv.midx }">
 		  <a href='<%= request.getContextPath()%>/member/memberLogoutAction.do'>로그아웃</a>
 		  <a href='<%= request.getContextPath()%>/member/mypage.do'>마이페이지</a>
-		  <!-- 관리자일 경우 관리페이지 보여줌 -->
-<%	if(session.getAttribute("superMember").equals("Y")){ %>
+		</c:if>
+		<!-- 관리자일 경우 관리페이지 보여줌 -->
+		<c:if test="${mv.supermember eq 'Y' }">
 		  <a href='<%= request.getContextPath()%>/member/superMember.do'>관리페이지</a>
-<%	
-}}else{
-%>
+		</c:if>
+		<c:if test="${empty mv }">
 		  <a href='<%= request.getContextPath()%>/member/memberJoin.do'>회원가입</a>
-<%} %>
+		</c:if>
           <a href="<%= request.getContextPath()%>/second/secondBoard.do">자유게시판</a>
           <a href="<%= request.getContextPath()%>/main/index.do">추천게시판</a>
           <a href="<%= request.getContextPath()%>/notify/notifyBoard.do">공지사항</a>
@@ -78,59 +80,75 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 				</tr>
 			</thead>
 			<tbody>
-<% for(NotifyVO nv: nlist){ 
-	if(session.getAttribute("midx") != null){ %>
-	<!-- 공지사항 글 -->
-	<!-- 로그인 했을 경우에만 게시물 클릭 이동이 가능하게 한다. -->
-             	<tr class="b">
-	                <th>공지</th>
-	                <th>
-	                	<a href="<%=request.getContextPath()%>/notify/notifyContent.do?bidx=<%=nv.getBidx()%>"><%=nv.getSubject()%></a>
-	                </th>
-	                <th><%=nv.getWriter() %></th>
-	                <th><%=nv.getViewCount() %></th>
-	                <th><%=nv.getLikeCount() %></th>
-	                <th><%=nv.getWriteday().substring(0,16) %></th>
-             	</tr>
+				<!-- 공지사항 글 -->
+				<!-- 로그인 했을 경우에만 게시물 클릭 이동이 가능하게 한다. -->
+				<c:if test="${not empty nlist }">
+					<c:if test="${not empty mv }">
+						<c:forEach var="vo" items="${nlist}">
+							<tr class="b">
+								<th>공지</th>
+								<th>
+									<a href="<%=request.getContextPath()%>/notify/notifyContent.do?bidx=${vo.bidx}">${vo.subject}</a>
+								</th>
+								<th>${vo.writer }</th>
+								<th>${vo.viewCount }</th>
+								<th>${vo.likeCount }</th>
+								<c:set var="writeday" value="${vo.writeday }"/>
+								<th>${fn:substring(writeday,0,16)}</th>
+							</tr>
+						</c:forEach>
+					</c:if>
+					<c:if test="${empty mv }">
+						<c:forEach var="vo" items="${nlist}">
+							<tr class="b">
+								<th>공지</th>
+								<th>${vo.subject}</th>
+								<th>${vo.writer }</th>
+								<th>${vo.viewCount }</th>
+								<th>${vo.likeCount }</th>
+								<c:set var="writeday" value="${vo.writeday }"/>
+								<th>${fn:substring(writeday,0,16)}</th>
+							</tr>
+						</c:forEach>
+					</c:if>
+				</c:if>
+				<!-- 추천게시판 글 -->
+				<c:if test="${empty alist }">
+					<tr>
+						<td colspan="6"> 등록 된 게시글이 없습니다. </td>
+					</tr>
+				</c:if>
+				<c:if test="${not empty alist }">
+					<c:if test="${not empty mv }">
+						<c:forEach var="vo" items="${alist}">
+							<tr class="b">
+								<td>${vo.bidx }</td>
+								<td>
+									<a href="<%=request.getContextPath()%>/main/mainContent.do?bidx=${vo.bidx}">${vo.subject}</a>
+								</td>
+								<td>${vo.writer }</td>
+								<td>${vo.viewCount }</td>
+								<td>${vo.likeCount }</td>
+								<c:set var="writeday" value="${vo.writeday }"/>
+								<td>${fn:substring(writeday,0,16)}</td>
+							</tr>
+						</c:forEach>
+					</c:if>
+					<c:if test="${empty mv }">
+						<c:forEach var="vo" items="${alist}">
+							<tr class="b">
+								<td>${vo.bidx }</td>
+								<td>${vo.subject}</td>
+								<td>${vo.writer }</td>
+								<td>${vo.viewCount }</td>
+								<td>${vo.likeCount }</td>
+								<c:set var="writeday" value="${vo.writeday }"/>
+								<td>${fn:substring(writeday,0,16)}</td>
+							</tr>
+						</c:forEach>
+					</c:if>
+				</c:if>
 			</tbody>
-<%}else{%>
-			<tbody>
-             	<tr class="b">
-	                <th>공지</th>
-	                <th><%=nv.getSubject()%></th>
-	                <th><%=nv.getWriter() %></th>
-	                <th><%=nv.getViewCount() %></th>
-	                <th><%=nv.getLikeCount() %></th>
-	                <th><%=nv.getWriteday().substring(0,16) %></th>
-             	</tr>
-<%}} %>
-<% for(MainVO mv: alist){ 
-	if(session.getAttribute("midx") != null){ %>
-	<!-- 추천게시판 글 -->
-	<!-- 로그인 했을 경우에만 게시물 클릭 이동이 가능하게 한다. -->
-             	<tr class="b">
-	                <td><%=mv.getBidx() %></td>
-	                <td>
-	                	<a href="<%=request.getContextPath()%>/main/mainContent.do?bidx=<%=mv.getBidx()%>"><%=mv.getSubject()%></a>
-	                </td>
-	                <td><%=mv.getWriter() %></td>
-	                <td><%=mv.getViewCount() %></td>
-	                <td><%=mv.getLikeCount() %></td>
-	                <td><%=mv.getWriteday().substring(0,16) %></td>
-             	</tr>
-			</tbody>
-<%}else{%>
-			<tbody>
-             	<tr class="b">
-	                <td><%=mv.getBidx() %></td>
-	                <td><%=mv.getSubject()%></td>
-	                <td><%=mv.getWriter() %></td>
-	                <td><%=mv.getViewCount() %></td>
-	                <td><%=mv.getLikeCount() %></td>
-	                <td><%=mv.getWriteday().substring(0,16) %></td>
-             	</tr>
-<%}} %>
-		</tbody>
 		</table>
 			<!-- 검색창 -->
 		<form id="search" action="<%=request.getContextPath()%>/main/index.do" method="post">
@@ -141,12 +159,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
 			<input type="text" name="keyword">
 			<input type="submit" value="검색">
 		</form>
-<%if(session.getAttribute("midx") != null){ %>
-		<div id="writeDiv">
-			<button id="writeBtn" onclick="writePage()">글쓰기</button>
-		</div> <br> <br>
-<%} %>
+		<c:if test="${not empty mv }">
+			<div id="writeDiv">
+				<button id="writeBtn" onclick="writePage()">글쓰기</button>
+			</div> <br> <br>
+		</c:if>
         <div class="page">
+        
 <% 
 	if(pm.isPrev() == true){
 		out.println("<a href='"+request.getContextPath()+"/main/index.do?page="+(pm.getStartPage()-1)+"&keyword="+pm.encoding(pm.getScri().getKeyword())+"&searchType="+pm.getScri().getSearchType()+"'>◀</a>");		
